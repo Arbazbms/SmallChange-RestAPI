@@ -18,10 +18,14 @@
 			    p.client_id,
 			    p.portfolio_item_id,
 			    p.instrument_id,
-			    p.trade_id,
+			    t.execution_price as cost_price,
 			    p.quantity
 			FROM
 			    sc_client_portfolio p
+			LEFT JOIN
+				sc_trade t
+			ON 
+				p.trade_id=t.tarde_id
 			    WHERE p.client_id= #{id}
 			    
 		</select>
