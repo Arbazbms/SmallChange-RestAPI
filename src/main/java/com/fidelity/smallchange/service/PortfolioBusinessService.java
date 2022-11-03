@@ -17,5 +17,16 @@ public class PortfolioBusinessService {
 		List<PortfolioItem> client_portfolio=dao.getPortfolio(client_id);
 		return client_portfolio;
 	}
+	public boolean addToPortfolio(PortfolioItem pi) {
+		
+		return dao.addToPortfolio(pi);
+	}
+	public boolean updatePortfolioItem(PortfolioItem pi) {
+		return dao.updatePortfolioItem(pi);
+	}
+	public boolean removeFromPortfolio(String Portfolio_item_id) {
+		 return dao.removeFromPortfolio(Portfolio_item_id);
+	}
+
 
 }
