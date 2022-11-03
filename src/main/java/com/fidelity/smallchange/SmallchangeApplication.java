@@ -37,16 +37,4 @@ public class SmallchangeApplication {
 	    return LoggerFactory.getLogger(classThatWantsALogger);
 	}
 
-	/**
-	 * This method creates a Logger that can be autowired in other classes:{@code
-	 *    @Autowired 
-	 *    private Logger logger;
-	 }*/
-	@Bean
-	@Scope("prototype")
-	public Logger createLogger(InjectionPoint ip) {
-	    Class<?> classThatWantsALogger = ip.getField().getDeclaringClass();
-	    return LoggerFactory.getLogger(classThatWantsALogger);
-	}
-	
 }
