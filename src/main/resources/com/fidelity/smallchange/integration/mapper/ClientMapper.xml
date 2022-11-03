@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fidelity.integration.ClientMapper">
+
+	<resultMap type="Client" id="ClientMapping">
+		<id property="clientId"				    column="CLIENT_ID" />
+		<result property="date_of_birth"		column="DATE_OF_BIRTH" />
+		<result property="country"		        column="COUNTRY" />
+		<result property="postal"		        column="POSTAL_CODE" />
+		<result property="identification.type"		column="TYPE" />
+		<result property="identification.value"	column="VALUE" />
+		<association property="login_credentials"    resultMap="LoginMapping"/>
+     </resultMap>
+	
+	
+	<resultMap type="Login" id="LoginMapping">
+	    <result property="email"		column="EMAIL" />
+	</resultMap>
+	
+    <select id="getClientById" resultMap="ClientMapping">
+			SELECT
+			    c.client_id,
+			    c.Email,
+			    c.date_Of_Birth,
+			    c.country,
+			    c.postal_code,
+			    ci.type,
+			    ci.value
+			FROM
+			    SCOTT.sc_client    c
+				JOIN SCOTT.sc_client_identification  ci ON c.client_id = ci.client_id
+		    WHERE c.client_id=#{clientId}
+    </select>
+    
+    <insert id="insertClient">
+			INSERT INTO sc_Client (
+			    client_id,
+			    email,
+			    date_Of_Birth,
+			    country,
+			    postal_Code
+			) VALUES (
+			    #{client.clientId},
+			    #{login.email},
+			    #{client.date_of_birth},
+			    #{client.country},
+			    #{client.postal}
+			)
+    </insert>
+    
+     <insert id="insertIdentification" >
+			INSERT INTO sc_client_identification (
+			    client_id,
+			    type,
+			    value
+			 
+			) VALUES (
+			    #{client_id},
+			    #{clientIdentification.type},
+			    #{clientIdentification.value}
+			)
+    </insert>
+    
+     <update id="updateClient">
+			UPDATE sc_client 
+				SET
+			    email=#{login.email},
+			    date_of_birth= #{client.date_of_birth},
+			    country=#{client.country},
+			    postal_code=#{client.postal}
+				WHERE 	sc_client.client_id=#{client.clientId}
+    </update>
+    
+    <update id="updateIdentification" parameterType="Identification">
+			UPDATE sc_Client_Identification 
+			SET
+			    type=#{type},
+			    value=#{value}
+			WHERE	sc_client_identification.client_id=#{clientId}
+    </update>
+    
+</mapper>
