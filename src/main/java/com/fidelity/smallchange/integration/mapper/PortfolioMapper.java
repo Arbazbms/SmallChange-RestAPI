@@ -2,6 +2,7 @@ package com.fidelity.smallchange.integration.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fidelity.smallchange.models.Portfolio;
 import com.fidelity.smallchange.models.PortfolioItem;
 
+@Mapper()
 public interface PortfolioMapper {
 
 	
