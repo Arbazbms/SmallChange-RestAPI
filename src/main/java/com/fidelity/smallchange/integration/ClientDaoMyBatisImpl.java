@@ -2,6 +2,7 @@ package com.fidelity.smallchange.integration;
 
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -10,14 +11,21 @@ import com.fidelity.smallchange.models.Client;
 import com.fidelity.smallchange.models.Identification;
 import com.fidelity.smallchange.models.Login;
 
+
+
 @Repository("clientDao")
 public class ClientDaoMyBatisImpl implements ClientDao {
 	@Autowired
 	private ClientMapper mapper;
 	
+	@Autowired
+	Logger log;
+	
 	@Override
 	public Client getClientByID(String clientId) {
-		return mapper.getClientByID(clientId);
+		log.debug("inside getclientid");
+		Client c=mapper.getClientByID(clientId);
+		return c;
 	}
 
 	@Override

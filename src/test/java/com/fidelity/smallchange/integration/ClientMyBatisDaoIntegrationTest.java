@@ -19,12 +19,15 @@ import com.fidelity.smallchange.models.Client;
 import com.fidelity.smallchange.models.Identification;
 import com.fidelity.smallchange.models.Login;
 
+
+
 @SpringBootTest
 @Transactional
 public class ClientMyBatisDaoIntegrationTest {
 	@Autowired
 	private ClientDao dao;
 
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
@@ -40,7 +43,7 @@ public class ClientMyBatisDaoIntegrationTest {
 		Client c=dao.getClientByID("C101");
 		assertThat(c, is(equalTo(allClients.get(0))));
 	}
-	@Test
+	//@Test
 	void TestInsertClient() {
         String id="C277";
 		// verify that Widget with id = 42 is NOT in the database
@@ -59,7 +62,7 @@ public class ClientMyBatisDaoIntegrationTest {
 			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client", "client_id = " + id))));
 	
 	}
-	@Test
+	//@Test
 	void TestInsertIdentification() {
 		String id="C277";
 		// verify that Widget with id = 42 is NOT in the database
@@ -77,7 +80,7 @@ public class ClientMyBatisDaoIntegrationTest {
 		assertThat(1, is(equalTo(
 			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id = " + id))));
 	}
-	@Test
+	//@Test
 	void TestUpdateClient() {
          
 		
@@ -98,7 +101,7 @@ public class ClientMyBatisDaoIntegrationTest {
 		// verify that only the price was updated in the database
 		assertThat(originalClient, is(equalTo(updatedClient)));
 	}
-	@Test
+	//@Test
 	void TestUpdateIdentification() {
 		// load the original Widget from the database
 		        Identification originalClientIdentification = loadClientIdentificationFromDb("C101");

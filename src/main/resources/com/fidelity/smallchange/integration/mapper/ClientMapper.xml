@@ -9,11 +9,14 @@
 		<result property="date_of_birth"		column="DATE_OF_BIRTH" />
 		<result property="country"		        column="COUNTRY" />
 		<result property="postal"		        column="POSTAL_CODE" />
-		<result property="identification.type"		column="TYPE" />
-		<result property="identification.value"	column="VALUE" />
+		<association property="identification"		resultMap="IdentificationMap" />
 		<association property="login_credentials"    resultMap="LoginMapping"/>
      </resultMap>
-	
+     
+	<resultMap type="Identification" id="IdentificationMap">
+	    <result property="type"		column="TYPE" />
+	    <result property="value"		column="VALUE" />
+	</resultMap>
 	
 	<resultMap type="Login" id="LoginMapping">
 	    <result property="email"		column="EMAIL" />
