@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 2022-11-03 10:13:43.686  WARN --- o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.fidelity.smallchange]' package. Please check your configuration.
 2022-11-03 10:13:44.115  INFO --- o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
 2022-11-03 10:13:45.106  INFO --- o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
@@ -1486,3 +1488,4 @@ Caused by: org.apache.ibatis.builder.BuilderException: Wrong namespace. Expected
 2022-11-03 14:51:18.230 DEBUG --- c.f.s.i.m.PortfolioMapper.getPortfolio   : ==>  Preparing: SELECT p.client_id, p.portfolio_item_id, p.instrument_id, p.trade_id, t.execution_price as cost_price, p.quantity FROM sc_client_portfolio p LEFT JOIN sc_trade t ON p.trade_id=t.trade_id WHERE p.client_id= ?
 2022-11-03 14:51:18.345 DEBUG --- c.f.s.i.m.PortfolioMapper.getPortfolio   : ==> Parameters: C101(String)
 2022-11-03 14:51:18.444 DEBUG --- c.f.s.i.m.PortfolioMapper.getPortfolio   : <==      Total: 1
+>>>>>>> 297556d9350cda9f9bba764f193308e7aaa2c0ee
