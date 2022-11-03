@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fidelity.integration.PortfolioMapper">
+
+
+	<resultMap type="PortfolioItem" id="PortfolioItemMap">
+		<id property="portfolio_item_id"				column="portfolio_item_id" />
+		<result property="client_id"			column="client_id" />
+		<result property="instrument_id"			column="instrument_id" />
+		<result property="trade_id"			column="trade_id" />
+		<result property="quantity"		column="quantity" />
+	</resultMap>
+
+		<select id="getPortfolio" resultType="PortfolioItem"  parameterType="String">
+			SELECT
+			    p.client_id,
+			    p.portfolio_item_id,
+			    p.instrument_id,
+			    p.trade_id,
+			    p.quantity
+			FROM
+			    sc_client_portfolio p
+			    WHERE p.client_id= #{id}
+			    
+		</select>
+		
+			<insert id="addToPortfolio" parameterType="PortfolioItem">
+				INSERT INTO sc_client_portfolio (
+				    portfolio_item_id,
+				    instrument_id,
+				    trade_id,
+				    quantity,
+				    client_id
+				 
+				) VALUES (
+				    #{portfolio_item_id},
+				    #{instrument_id},
+				    #{trade_id},
+				    #{quantity},
+				    #{client_id}
+				)
+	</insert>
+
+	<update id="updatePortfolioItem" parameterType="PortfolioItem">
+				UPDATE sc_client_portfolio
+				SET
+			    quantity=#{quantity}
+				WHERE 		sc_client_portfolio.portfolio_item_id=#{portfolio_item_id}
+	</update>
+	
+	
+	<delete id="removeFromPortfolio" parameterType="String">
+				DELETE FROM sc_client_portfolio
+				WHERE 		sc_client_portfolio.portfolio_item_id=#{portfolio_item_id}
+	</delete>
+	
+		
+		
+
+
+
+
+</mapper>
