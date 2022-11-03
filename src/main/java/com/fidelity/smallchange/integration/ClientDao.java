@@ -1,0 +1,15 @@
+package com.fidelity.smallchange.integration;
+
+import java.util.List;
+
+import com.fidelity.smallchange.models.Client;
+import com.fidelity.smallchange.models.Identification;
+import com.fidelity.smallchange.models.Login;
+
+public interface ClientDao {
+	public Client getClientByID(String clientId);
+	public int insertClient(Login login, Client client);
+	public int insertIdentification(String client_id,Identification clientIdentification);
+	public int updateClient(Login login,Client client);
+	public int updateIdentification(Identification clientIdentification,String client_id);
+}

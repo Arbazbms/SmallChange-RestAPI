@@ -6,6 +6,27 @@ import java.util.Objects;
 public class Client {
 	private String clientId;
 	private Login login_credentials;
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+	public void setLogin_credentials(Login login_credentials) {
+		this.login_credentials = login_credentials;
+	}
+	public void setDate_of_birth(LocalDate date_of_birth) {
+		this.date_of_birth = date_of_birth;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	public void setPostal(String postal) {
+		this.postal = postal;
+	}
+	public void setId(Identification id) {
+		this.id = id;
+	}
+	public void setCrv(ClientRegisterationValidation crv) {
+		this.crv = crv;
+	}
 	private LocalDate date_of_birth;
 	private String country;
 	private String postal;
