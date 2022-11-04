@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.fidelity.integration.PortfolioMapper">
+<mapper namespace="com.fidelity.smallchange.integration.mapper.PortfolioMapper">
 
 
 	<resultMap type="PortfolioItem" id="PortfolioItemMap">
@@ -19,9 +19,14 @@
 			    p.portfolio_item_id,
 			    p.instrument_id,
 			    p.trade_id,
+			    t.execution_price as cost_price,
 			    p.quantity
 			FROM
 			    sc_client_portfolio p
+			LEFT JOIN
+				sc_trade t
+			ON 
+				p.trade_id=t.trade_id
 			    WHERE p.client_id= #{id}
 			    
 		</select>
