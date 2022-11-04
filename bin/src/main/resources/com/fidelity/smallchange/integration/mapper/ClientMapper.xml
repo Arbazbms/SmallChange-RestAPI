@@ -2,36 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.fidelity.smallchange.integration.mapper.ClientMapper">
+<mapper namespace="com.fidelity.integration.ClientMapper">
 
 	<resultMap type="Client" id="ClientMapping">
 		<id property="clientId"				    column="CLIENT_ID" />
-		<result property="email"		column="EMAIL" />
 		<result property="date_of_birth"		column="DATE_OF_BIRTH" />
-		<result property="country"		column="COUNTRY" />
-		<result property="postal"		column="POSTAL_CODE" />
-		<association property="id" resultMap="identificationMap"/>
-	 </resultMap>
-     
+		<result property="country"		        column="COUNTRY" />
+		<result property="postal"		        column="POSTAL_CODE" />
+		<result property="identification.type"		column="TYPE" />
+		<result property="identification.value"	column="VALUE" />
+		<association property="login_credentials"    resultMap="LoginMapping"/>
+     </resultMap>
 	
 	
-	<resultMap type="Identification" id="identificationMap">
-	<result property="type"		column="TYPE" />
-	<result property="value"		column="VALUE" />
+	<resultMap type="Login" id="LoginMapping">
+	    <result property="email"		column="EMAIL" />
 	</resultMap>
 	
-    <select id="getClientByID" resultMap="ClientMapping" parameterType="String">
+    <select id="getClientById" resultMap="ClientMapping">
 			SELECT
 			    c.client_id,
-			    c.email,
-			    c.date_of_birth,
+			    c.Email,
+			    c.date_Of_Birth,
 			    c.country,
 			    c.postal_code,
 			    ci.type,
 			    ci.value
 			FROM
-			    sc_client c
-			JOIN sc_client_identification ci on c.client_id=ci.client_id	
+			    SCOTT.sc_client    c
+				JOIN SCOTT.sc_client_identification  ci ON c.client_id = ci.client_id
 		    WHERE c.client_id=#{clientId}
     </select>
     
@@ -39,12 +38,12 @@
 			INSERT INTO sc_Client (
 			    client_id,
 			    email,
-			    date_of_birth,
+			    date_Of_Birth,
 			    country,
 			    postal_Code
 			) VALUES (
 			    #{client.clientId},
-			    #{client.email},
+			    #{login.email},
 			    #{client.date_of_birth},
 			    #{client.country},
 			    #{client.postal}
@@ -67,19 +66,19 @@
      <update id="updateClient">
 			UPDATE sc_client 
 				SET
-			    email=#{client.email},
+			    email=#{login.email},
 			    date_of_birth= #{client.date_of_birth},
 			    country=#{client.country},
 			    postal_code=#{client.postal}
 				WHERE 	sc_client.client_id=#{client.clientId}
     </update>
     
-    <update id="updateIdentification" >
+    <update id="updateIdentification" parameterType="Identification">
 			UPDATE sc_Client_Identification 
 			SET
-			    type=#{clientIdentification.type},
-			    value=#{clientIdentification.value}
-			WHERE	sc_client_identification.client_id=#{client_id}
+			    type=#{type},
+			    value=#{value}
+			WHERE	sc_client_identification.client_id=#{clientId}
     </update>
     
 </mapper>
