@@ -20,4 +20,8 @@ public class PreferenceService {
 	public Preference getPreferenceById(String id) {
 		return dao.getPreference(id);
 	}
+	
+	public int insertPreference(Preference preference) {
+		return dao.insertPreference(preference);
+	}
 }
