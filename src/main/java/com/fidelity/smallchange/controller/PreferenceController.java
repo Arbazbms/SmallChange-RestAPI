@@ -36,12 +36,8 @@ public class PreferenceController {
 	 */
 	@GetMapping("{id}")
 	public ResponseEntity<Preference> queryForPreferneceById(@PathVariable String id) {
-//		logger.debug("getting Preference by ID" + id);
-		// If the id in the request is less than or equal to zero, the response should have
-		// HTTP status 400
-//		if (id <= 0) {
-//			throw new ServerWebInputException("id must be greater than 0");
-//		}
+		logger.debug("getting Preference by ID" + id);
+
 		try {
 			Preference preference = dao.getPreference(id);
 			
