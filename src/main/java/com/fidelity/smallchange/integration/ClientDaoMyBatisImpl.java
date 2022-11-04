@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fidelity.smallchange.integration.mapper.ClientMapper;
 import com.fidelity.smallchange.models.Client;
-import com.fidelity.smallchange.models.Identification;
+import com.fidelity.smallchange.models.ClientIdentification;
 import com.fidelity.smallchange.models.Login;
 
 
@@ -34,7 +34,7 @@ public class ClientDaoMyBatisImpl implements ClientDao {
 	}
 
 	@Override
-	public int insertIdentification(String client_id, Identification clientIdentification) {
+	public int insertIdentification(String client_id, ClientIdentification clientIdentification) {
 		return mapper.insertIdentification(client_id, clientIdentification);
 	}
 
@@ -44,7 +44,7 @@ public class ClientDaoMyBatisImpl implements ClientDao {
 	}
 
 	@Override
-	public int updateIdentification(Identification clientIdentification, String client_id) {
+	public int updateIdentification(ClientIdentification clientIdentification, String client_id) {
 		return mapper.updateIdentification(clientIdentification, client_id);
 	}
 

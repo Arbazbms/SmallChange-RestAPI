@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.fidelity.smallchange.models.Client;
 import com.fidelity.smallchange.models.ClientRegisterationValidation;
-import com.fidelity.smallchange.models.Identification;
+import com.fidelity.smallchange.models.ClientIdentification;
 
 class ClientRegisterationTest {
 
