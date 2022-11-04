@@ -1,5 +1,5 @@
 package com.fidelity.smallchange.integration;
-
+import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -33,44 +33,48 @@ public class ClientMyBatisDaoIntegrationTest {
 	
 	
 	private static List<Client> allClients = Arrays.asList(
-			new Client("C101","ashr@gmail.com"," ",	LocalDate.of(2022,1,22),"India","678987",new Identification("SSN","123456734")),
-			new Client("C109","ashr@gmail.com"," ",	LocalDate.of(2022,1,22),"India","678987",new Identification("SSN","123456789"))
+			new Client("C101","ashr@gmail.com",	LocalDate.of(2022,1,22),"India","678987","SSN","123456734"),
+			new Client("C109","ashr@gmail.com",	LocalDate.of(2022,1,22),"India","678987","SSN","123456789")
 			
 		);
 	
 	@Test
 	void TestGetClientByID() {
+		Client c1=new Client("C101","ashr@gmail.com",LocalDate.of(2022,1,22),"India","678987","SSN","123456734");
 		Client c=dao.getClientByID("C101");
-		assertThat(c, is(equalTo(allClients.get(0))));
+		assertNotNull(c);
+		assertThat(c, is(c1));
 	}
-	//@Test
+	@Test
 	void TestInsertClient() {
         String id="C277";
 		// verify that Widget with id = 42 is NOT in the database
-		assertThat(0, is(equalTo(
-			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client", "client_id = " + id))));
+        assertEquals(0, 
+    			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client", "client_id = 'C277'"));
 
-		Client newClient = new Client(id,"ranj@gmail.com"," ",	LocalDate.of(2000,10,27),"India","57004",new Identification("SSN","123456000"));
 
-		int rows = dao.insertClient(new Login("ranj@gmail.com"," "),newClient);
+		Client newClient = new Client(id,"ranj@gmail.com",	LocalDate.of(2000,10,27),"India","57004");
+
+		int rows = dao.insertClient(newClient);
 		
 		// verify that 1 row was inserted
 		assertThat(rows, is(equalTo(1)));
 		
 		// verify that Widget with id = 42 IS in the database
-		assertThat(1, is(equalTo(
-			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client", "client_id = " + id))));
+		assertEquals(1, 
+			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client", "client_id = 'C277'"));
 	
 	}
-	//@Test
+	@Test
 	void TestInsertIdentification() {
 		String id="C277";
 		// verify that Widget with id = 42 is NOT in the database
 		assertThat(0, is(equalTo(
-			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id = " + id))));
+			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id ='C277' " ))));
 
 		Identification newClientIdentification = new Identification("SSN","123456001");
-
+		Client newClient = new Client(id,"ranj@gmail.com",	LocalDate.of(2000,10,27),"India","57004");
+		dao.insertClient(newClient);
 		int rows = dao.insertIdentification("C277",newClientIdentification);
 		
 		// verify that 1 row was inserted
@@ -78,9 +82,9 @@ public class ClientMyBatisDaoIntegrationTest {
 		
 		// verify that Widget with id = 42 IS in the database
 		assertThat(1, is(equalTo(
-			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id = " + id))));
+			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id ='C277' " ))));
 	}
-	//@Test
+	@Test
 	void TestUpdateClient() {
          
 		
@@ -90,7 +94,7 @@ public class ClientMyBatisDaoIntegrationTest {
 		// modify the local Widget
 		originalClient.setPostal("570008");
 
-		int rows = dao.updateClient(new Login("ashr@gmail.com"," "),originalClient);
+		int rows = dao.updateClient(originalClient);
 		
 		// verify that 1 row was updated
 		assertThat(rows, is(equalTo(1)));
@@ -101,7 +105,7 @@ public class ClientMyBatisDaoIntegrationTest {
 		// verify that only the price was updated in the database
 		assertThat(originalClient, is(equalTo(updatedClient)));
 	}
-	//@Test
+	@Test
 	void TestUpdateIdentification() {
 		// load the original Widget from the database
 		        Identification originalClientIdentification = loadClientIdentificationFromDb("C101");
@@ -124,17 +128,17 @@ public class ClientMyBatisDaoIntegrationTest {
 	
 	
 	private Client loadClientFromDb(String id) {
-		String sql = "select * from sc_client where client_id = " + id;
+		String sql = "select * from sc_client where client_id = ?";
 		
 		return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> 
-			new Client(rs.getString("client_id"),rs.getString("email"),"",rs.getDate("date_of_birth").toLocalDate() ,rs.getString("country"),rs.getString("postal_code"),this.loadClientIdentificationFromDb(id)));
+			new Client(rs.getString("client_id"),rs.getString("email"),rs.getDate("date_of_birth").toLocalDate() ,rs.getString("country"),rs.getString("postal_code")),new Object[]{id});
 	}
 	
 	private Identification loadClientIdentificationFromDb(String id) {
-		String sql = "select * from sc_client_identification where client_id = " + id;
+		String sql = "select * from sc_client_identification where client_id = ?";
 		
 		return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> 
-			new Identification(rs.getString("type"), rs.getString("value")));
+			new Identification(rs.getString("type"), rs.getString("value")),new Object[]{id});
 	}
 	
 }

@@ -29,8 +29,8 @@ public class ClientDaoMyBatisImpl implements ClientDao {
 	}
 
 	@Override
-	public int insertClient(Login login, Client client) {
-		return mapper.insertClient(login, client);
+	public int insertClient(Client client) {
+		return mapper.insertClient(client);
 	}
 
 	@Override
@@ -39,8 +39,8 @@ public class ClientDaoMyBatisImpl implements ClientDao {
 	}
 
 	@Override
-	public int updateClient(Login login, Client client) {
-		return mapper.updateClient(login, client);
+	public int updateClient(Client client) {
+		return mapper.updateClient(client);
 	}
 
 	@Override

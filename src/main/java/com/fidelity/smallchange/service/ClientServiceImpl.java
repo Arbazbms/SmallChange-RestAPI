@@ -37,10 +37,11 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public int insertClient(Login login, Client client) {
+	public int insertClient(Client client) {
 		int count = 0;
 		try {
-			count = dao.insertClient(login,client);
+			count = dao.insertClient(client);
+			dao.insertIdentification(client.getClientId(), client.getId());
 		} catch (Exception e) {
 			String msg = "Error inserting client";
 			throw new DatabaseException(msg, e);
@@ -48,25 +49,26 @@ public class ClientServiceImpl implements ClientService{
 		return count;
 	}
 
-	@Override
-	public int insertIdentification(String client_id, Identification clientIdentification) {
-		
-		int count = 0;
-		try {
-			count = dao.insertIdentification(client_id,clientIdentification);
-		} catch (Exception e) {
-			String msg = "Error inserting clientIdentification";
-			throw new DatabaseException(msg, e);
-		}
-		return count;
-	}
+//	@Override
+//	public int insertIdentification(String client_id, Identification clientIdentification) {
+//		
+//		int count = 0;
+//		try {
+//			count = dao.insertIdentification(client_id,clientIdentification);
+//		} catch (Exception e) {
+//			String msg = "Error inserting clientIdentification";
+//			throw new DatabaseException(msg, e);
+//		}
+//		return count;
+//	}
 
 	@Override
-	public int updateClient(Login login, Client client) {
+	public int updateClient(Client client) {
 		
 		int count = 0;
 		try {
-			count = dao.updateClient(login,client);
+			count = dao.updateClient(client);
+			dao.updateIdentification(client.getId(), client.getClientId());
 		} catch (Exception e) {
 			String msg = "Error updating client";
 			throw new DatabaseException(msg, e);

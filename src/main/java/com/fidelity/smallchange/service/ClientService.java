@@ -8,8 +8,8 @@ import com.fidelity.smallchange.models.Login;
 
 public interface ClientService {
 	public Client getClientByID(String clientId);
-	public int insertClient(Login login, Client client);
-	public int insertIdentification(String client_id,Identification clientIdentification);
-	public int updateClient(Login login,Client client);
+	public int insertClient(Client client);
+	//public int insertIdentification(String client_id,Identification clientIdentification);
+	public int updateClient(Client client);
 	public int updateIdentification(Identification clientIdentification,String client_id);
 }

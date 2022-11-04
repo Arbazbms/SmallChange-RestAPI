@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Identification {
 	
-	public String type;
-	public String value;
+	private String type;
+	private String value;
 	public Identification(String type, String value) {
 		if(type==""||value=="")
 			throw new IllegalArgumentException("Valid identification not provided");

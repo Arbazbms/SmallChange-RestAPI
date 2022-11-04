@@ -6,34 +6,32 @@
 
 	<resultMap type="Client" id="ClientMapping">
 		<id property="clientId"				    column="CLIENT_ID" />
+		<result property="email"		column="EMAIL" />
 		<result property="date_of_birth"		column="DATE_OF_BIRTH" />
-		<result property="country"		        column="COUNTRY" />
-		<result property="postal"		        column="POSTAL_CODE" />
-		<association property="identification"		resultMap="IdentificationMap" />
-		<association property="login_credentials"    resultMap="LoginMapping"/>
-     </resultMap>
+		<result property="country"		column="COUNTRY" />
+		<result property="postal"		column="POSTAL_CODE" />
+		<association property="id" resultMap="identificationMap"/>
+	 </resultMap>
      
-	<resultMap type="Identification" id="IdentificationMap">
-	    <result property="type"		column="TYPE" />
-	    <result property="value"		column="VALUE" />
+	
+	
+	<resultMap type="Identification" id="identificationMap">
+	<result property="type"		column="TYPE" />
+	<result property="value"		column="VALUE" />
 	</resultMap>
 	
-	<resultMap type="Login" id="LoginMapping">
-	    <result property="email"		column="EMAIL" />
-	</resultMap>
-	
-    <select id="getClientById" resultMap="ClientMapping" parameterType="String">
+    <select id="getClientByID" resultMap="ClientMapping" parameterType="String">
 			SELECT
 			    c.client_id,
-			    c.Email,
-			    c.date_Of_Birth,
+			    c.email,
+			    c.date_of_birth,
 			    c.country,
 			    c.postal_code,
 			    ci.type,
 			    ci.value
 			FROM
-			    SCOTT.sc_client    c
-				JOIN SCOTT.sc_client_identification  ci ON c.client_id = ci.client_id
+			    sc_client c
+			JOIN sc_client_identification ci on c.client_id=ci.client_id	
 		    WHERE c.client_id=#{clientId}
     </select>
     
@@ -41,12 +39,12 @@
 			INSERT INTO sc_Client (
 			    client_id,
 			    email,
-			    date_Of_Birth,
+			    date_of_birth,
 			    country,
 			    postal_Code
 			) VALUES (
 			    #{client.clientId},
-			    #{login.email},
+			    #{client.email},
 			    #{client.date_of_birth},
 			    #{client.country},
 			    #{client.postal}
@@ -69,7 +67,7 @@
      <update id="updateClient">
 			UPDATE sc_client 
 				SET
-			    email=#{login.email},
+			    email=#{client.email},
 			    date_of_birth= #{client.date_of_birth},
 			    country=#{client.country},
 			    postal_code=#{client.postal}
