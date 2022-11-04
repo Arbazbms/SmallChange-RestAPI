@@ -1,6 +1,7 @@
 package com.fidelity.smallchange.models;
 
 import java.util.Objects;
+import java.math.BigDecimal;
 
 public class PortfolioItem {
 	
@@ -23,21 +24,28 @@ public class PortfolioItem {
 			return false;
 		PortfolioItem other = (PortfolioItem) obj;
 		return Objects.equals(client_id, other.client_id) && Objects.equals(instrument_id, other.instrument_id)
-				&& Objects.equals(portfolio_item_id, other.portfolio_item_id)
-				&& Objects.equals(trade_id, other.trade_id);
+				&& Objects.equals(portfolio_item_id, other.portfolio_item_id);
 	}
 	private String portfolio_item_id;
 	private String client_id;
 	private String instrument_id;
 	private String trade_id;
+	private BigDecimal cost_price;
 	private int quantity;
 	public PortfolioItem() {}
-	public PortfolioItem(String client_id,String portfolio_item_id, String instrument_id, String trade_id,int quantity) {
+	public PortfolioItem(String client_id,String portfolio_item_id, String instrument_id, String trade_id,BigDecimal cost_price,int quantity) {
 		this.client_id=client_id;
 		this.portfolio_item_id = portfolio_item_id;
 		this.instrument_id = instrument_id;
 		this.trade_id = trade_id;
+		this.cost_price=cost_price;
 		this.quantity=quantity;
+	}
+	public BigDecimal getCost_price() {
+		return cost_price;
+	}
+	public void setCost_price(BigDecimal cost_price) {
+		this.cost_price = cost_price;
 	}
 	public String getClient_id() {
 		return client_id;
