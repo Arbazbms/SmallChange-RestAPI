@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.fidelity.smallchange.integration.ClientDao;
 import com.fidelity.smallchange.models.Client;
-import com.fidelity.smallchange.models.Identification;
+import com.fidelity.smallchange.models.ClientFmtsView;
+import com.fidelity.smallchange.models.ClientIdentification;
 import com.fidelity.smallchange.models.Login;
 
 
@@ -50,7 +53,7 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 //	@Override
-//	public int insertIdentification(String client_id, Identification clientIdentification) {
+//	public int insertIdentification(String client_id, ClientIdentification clientIdentification) {
 //		
 //		int count = 0;
 //		try {
@@ -77,7 +80,7 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public int updateIdentification(Identification clientIdentification, String client_id) {
+	public int updateIdentification(ClientIdentification clientIdentification, String client_id) {
 		
 		int count = 0;
 		try {
@@ -88,5 +91,24 @@ public class ClientServiceImpl implements ClientService{
 		}
 		return count;
 	}
+	
+	public boolean registerClient(Client new_client) {
+		ClientFmtsView fmts_client=new ClientFmtsView(new_client);
+		ClientFmtsView client=null;
+		RestTemplate template =new RestTemplate();
+		ResponseEntity<ClientFmtsView> fmts_response=template.postForEntity("localhost:3000/fmts/client", template, null);
+		if(fmts_response.hasBody())
+		{	
+			client=fmts_response.getBody();
+			new_client.setClientId(client.getClientId());
+			return dao.insertClient(new_client)==1;
+		}
+		else
+		{
+			throw new RuntimeException();
+		}
+			
+	}
+	
 
 }

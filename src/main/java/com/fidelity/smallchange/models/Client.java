@@ -9,9 +9,18 @@ public class Client {
 	private LocalDate date_of_birth;
 	private String country;
 	private String postal;
-	private Identification id;
-	private ClientRegisterationValidation crv;
+	private ClientIdentification id;
+	private String Token;
+//	private ClientRegisterationValidation crv;
 	
+	public String getToken() {
+		return Token;
+	}
+
+	public void setToken(String token) {
+		Token = token;
+	}
+
 	public Client() {
 		super();
 	}
@@ -43,15 +52,8 @@ public class Client {
 		this.date_of_birth = date_of_birth;
 		this.postal=postal;
 		this.country = country;
-		this.id = new Identification(type,value);
+		this.id = new ClientIdentification(type,value);
 	}
-//	public Login getLogin_credentials() {
-//		return login_credentials;
-//	}
-//	public void setLogin_credentials(Login login_credentials) {
-//	this.login_credentials = login_credentials;
-//}
-	
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
@@ -64,11 +66,8 @@ public class Client {
 	public void setPostal(String postal) {
 		this.postal = postal;
 	}
-	public void setId(Identification id) {
+	public void setId(ClientIdentification id) {
 		this.id = id;
-	}
-	public void setCrv(ClientRegisterationValidation crv) {
-		this.crv = crv;
 	}
 	public void setEmail(String email) {
 		this.email = email;
@@ -89,23 +88,9 @@ public class Client {
 	public String getPostal() {
 		return postal;
 	}
-	public Identification getId() {
+	public ClientIdentification getId() {
 		return id;
 	}
-	public ClientRegisterationValidation getCrv() {
-		return crv;
-	}
-	
-	
-	public void register() {
-		crv.clientExists(this);
-	}
-//	public boolean authenticate(String email_to_test, String password_to_test) {
-//	if(this.login_credentials.equals(new Login(email_to_test,password_to_test)))
-//		return true;
-//	else
-//		return false;
-//}
 
 	@Override
 	public int hashCode() {
