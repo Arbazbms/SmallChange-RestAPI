@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -75,7 +76,8 @@ public class PreferenceController {
 				 consumes=MediaType.APPLICATION_JSON_VALUE)
 		public DatabaseRequestResult insertPreference(@RequestBody Preference p) {
 			
-			
+		logger.debug("inside POSt", p.getLengthOfInvestment());
+		logger.warn(p.getClientId(), "kjkjkj");
 		int count = 0;
 		try {
 			count = service.insertPreference(p);
@@ -89,4 +91,24 @@ public class PreferenceController {
 		return new DatabaseRequestResult(count);
 	}
 	
+		
+		@PutMapping(value="/preference",
+				 produces=MediaType.APPLICATION_JSON_VALUE,
+				 consumes=MediaType.APPLICATION_JSON_VALUE)
+		public DatabaseRequestResult updatePreference(@RequestBody Preference p) {
+			logger.debug("IN UPDATE STARTING", p.getIncomeCategory());
+			logger.warn(p.getClientId(), "put client");
+			
+		int count = 0;
+		try {
+			count = service.updatePreference(p);
+		} 
+		catch (Exception e) {
+			throw new ServerErrorException(DB_ERROR_MSG, e);
+		}
+		if (count == 0) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
+		return new DatabaseRequestResult(count);
+	}
 }
