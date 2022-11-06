@@ -24,4 +24,8 @@ public class PreferenceService {
 	public int insertPreference(Preference preference) {
 		return dao.insertPreference(preference);
 	}
+	
+	public int updatePreference(Preference preference) {
+		return dao.updatePreference(preference);
+	}
 }
