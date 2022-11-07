@@ -35,14 +35,14 @@ public class Client {
 	public Client() {
 	}
 
-		public Client(String clientId, String email, LocalDate date_of_birth, String country,String postal) {
+		public Client(String clientId, String email, String date_of_birth, String country,String postal) {
 		this.clientId=clientId;
 		this.email=email;
-		this.date_of_birth=date_of_birth;
+		this.date_of_birth=LocalDate.parse(date_of_birth);
 		this.postal=postal;
 		this.country = country;
 	}
-	public Client(String clientId, String email, LocalDate date_of_birth, String country,String postal, String type,String value) {
+	public Client(String clientId, String email, String date_of_birth, String country,String postal, String type,String value) {
 //		if(clientId==""||clientId==null)
 //			throw new IllegalArgumentException("client id cannot be empty");
 		if(email==""||email==null)
@@ -59,7 +59,7 @@ public class Client {
 		this.clientId = clientId;
 		this.email=email;
 		//this.login_credentials=new Login(email,password);
-		this.date_of_birth = date_of_birth;
+		this.date_of_birth = LocalDate.parse(date_of_birth);
 		this.postal=postal;
 		this.country = country;
 		this.id = List.of(new ClientIdentification(type,value)) ;

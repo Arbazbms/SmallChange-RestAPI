@@ -104,7 +104,7 @@ public class ClientServiceImpl {
 	
 	
 //	@Override
-	public boolean registerClient(Client new_client) throws JsonProcessingException {
+	public Client registerClient(Client new_client) throws JsonProcessingException {
 		Client client;
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
@@ -125,7 +125,10 @@ public class ClientServiceImpl {
 			System.out.println(fmts_response);
 //			 client=fmts_response.getBody();
 			new_client.setClientId(client.getClientId());
-			return dao.insertClient(new_client)==1;
+			new_client.setToken(client.getToken());
+			System.out.println(new_client);
+			dao.insertClient(new_client);
+			return new_client;
 		}
 		else
 		{

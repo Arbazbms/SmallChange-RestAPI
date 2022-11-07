@@ -16,7 +16,7 @@ class ClientTest {
 	private Client client;
 	@BeforeEach
 	void init() {
-		client=new Client("C101","ashr@gmail.com",LocalDate.of(2011, 10, 10),"India","678987","adhaar","208979677");
+		client=new Client("C101","ashr@gmail.com","2020-2-2","India","678987","adhaar","208979677");
 	}
 	@Test
 	void testClientCreation_success() {
@@ -26,21 +26,21 @@ class ClientTest {
 	@Test
 	void testClientCreation_failure_emptystring() {
 		Exception e= assertThrows(IllegalArgumentException.class,()->{
-			Client client2=new Client("","ashh@gmail.com",LocalDate.of(2011, 10, 10),"India","33","adhaar","208979677");});
+			Client client2=new Client("","ashh@gmail.com","2020-2-2","India","33","adhaar","208979677");});
 		assertEquals("client id cannot be empty",e.getMessage());
 		
 	}
 	@Test
 	void testClientCreation_failure_emptycountry() {
 		Exception e= assertThrows(IllegalArgumentException.class,()->{
-			Client client2=new Client("Ashhar","ashh@gmail.com",LocalDate.of(2011, 10, 10),"","232","adhaar","208979677");});
+			Client client2=new Client("Ashhar","ashh@gmail.com","2020-2-2","","232","adhaar","208979677");});
 		assertEquals("country cannot be empty",e.getMessage());
 		
 	}
 	@Test
 	void testClientCreation_failure_emptyemail() {
 		Exception e= assertThrows(IllegalArgumentException.class,()->{
-			Client client2=new Client("Ashhar",null,LocalDate.of(2011, 10, 10),"","22","adhaar","208979677");});
+			Client client2=new Client("Ashhar",null,"2020-2-2","","22","adhaar","208979677");});
 		assertEquals("email cannot be empty",e.getMessage());
 		
 	}
@@ -54,7 +54,7 @@ class ClientTest {
 	@Test
 	void testClientCreation_failure_nullid() {
 		Exception e= assertThrows(IllegalArgumentException.class,()->{
-			Client client2=new Client("Ashhar","@gmail.com",LocalDate.of(2011, 10, 10),"India","222",null,null);});
+			Client client2=new Client("Ashhar","@gmail.com","2020-2-2","India","222",null,null);});
 		assertEquals("id cannot be null",e.getMessage());
 		
 	}

@@ -10,7 +10,7 @@
 		<result property="date_of_birth"		column="DATE_OF_BIRTH" />
 		<result property="country"		column="COUNTRY" />
 		<result property="postal"		column="POSTAL_CODE" />
-		<association property="id" resultMap="identificationMap"/>
+		<collection property="id" resultMap="identificationMap"/>
 	 </resultMap>
      
 	
@@ -35,17 +35,17 @@
 		    WHERE c.client_id=#{clientId}
     </select>
     
-    <insert id="insertClient">
+    <insert id="insertClient" parameterType="Client">
 			INSERT INTO sc_Client (
 			    client_id,
 			    email,
-			    date_of_birth,
+			   
 			    country,
 			    postal_Code
 			) VALUES (
 			    #{client.clientId},
 			    #{client.email},
-			    #{client.date_of_birth},
+			    
 			    #{client.country},
 			    #{client.postal}
 			)
