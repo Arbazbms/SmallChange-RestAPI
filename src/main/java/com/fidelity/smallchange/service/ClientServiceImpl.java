@@ -4,12 +4,22 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fidelity.smallchange.integration.ClientDao;
+import com.fidelity.smallchange.integration.ClientDaoMyBatisImpl;
 import com.fidelity.smallchange.models.Client;
 import com.fidelity.smallchange.models.ClientFmtsView;
 import com.fidelity.smallchange.models.ClientIdentification;
@@ -19,14 +29,14 @@ import com.fidelity.smallchange.models.Login;
 
 @Service
 @Transactional
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl {
 
 	@Autowired
-	private ClientDao dao;
+	private ClientDaoMyBatisImpl dao;
 	@Autowired
 	Logger log;
 	
-	@Override
+	
 	public Client getClientByID(String clientId) {
 		Client client=null;
 		try {
@@ -39,12 +49,12 @@ public class ClientServiceImpl implements ClientService{
 		return client;
 	}
 
-	@Override
+//	@Override
 	public int insertClient(Client client) {
 		int count = 0;
 		try {
 			count = dao.insertClient(client);
-			dao.insertIdentification(client.getClientId(), client.getId());
+			dao.insertIdentification(client.getClientId(), client.getId().get(0));
 		} catch (Exception e) {
 			String msg = "Error inserting client";
 			throw new DatabaseException(msg, e);
@@ -65,13 +75,13 @@ public class ClientServiceImpl implements ClientService{
 //		return count;
 //	}
 
-	@Override
+//	@Override
 	public int updateClient(Client client) {
 		
 		int count = 0;
 		try {
 			count = dao.updateClient(client);
-			dao.updateIdentification(client.getId(), client.getClientId());
+			dao.updateIdentification(client.getId().get(0), client.getClientId());
 		} catch (Exception e) {
 			String msg = "Error updating client";
 			throw new DatabaseException(msg, e);
@@ -79,12 +89,12 @@ public class ClientServiceImpl implements ClientService{
 		return count;
 	}
 
-	@Override
-	public int updateIdentification(ClientIdentification clientIdentification, String client_id) {
+//	@Override
+	public int updateIdentification(List<ClientIdentification> clientIdentification, String client_id) {
 		
 		int count = 0;
 		try {
-			count = dao.updateIdentification(clientIdentification,client_id);
+			count = dao.updateIdentification(clientIdentification.get(0),client_id);
 		} catch (Exception e) {
 			String msg = "Error updating clientIdentification";
 			throw new DatabaseException(msg, e);
@@ -92,14 +102,28 @@ public class ClientServiceImpl implements ClientService{
 		return count;
 	}
 	
-	public boolean registerClient(Client new_client) {
-		ClientFmtsView fmts_client=new ClientFmtsView(new_client);
-		ClientFmtsView client=null;
+	
+//	@Override
+	public boolean registerClient(Client new_client) throws JsonProcessingException {
+		Client client;
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+//	    headers.setAccept((List<MediaType>) MediaType.APPLICATION_JSON);
+	    ObjectMapper mapper = new ObjectMapper();
+	    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
+	    //convert java object to JSON
+	    String json=mapper.writeValueAsString(new_client);
+	    HttpEntity<String> request = 
+	    	      new HttpEntity<String>(json, headers);
 		RestTemplate template =new RestTemplate();
-		ResponseEntity<ClientFmtsView> fmts_response=template.postForEntity("localhost:3000/fmts/client", template, null);
+		ResponseEntity<String> fmts_response=template.postForEntity("http://localhost:3000/fmts/client",request, String.class);
 		if(fmts_response.hasBody())
 		{	
-			client=fmts_response.getBody();
+			 client = mapper.readValue(fmts_response.getBody(), Client.class);
+			System.out.println(fmts_response);
+//			 client=fmts_response.getBody();
 			new_client.setClientId(client.getClientId());
 			return dao.insertClient(new_client)==1;
 		}
@@ -107,7 +131,7 @@ public class ClientServiceImpl implements ClientService{
 		{
 			throw new RuntimeException();
 		}
-			
+//			
 	}
 	
 

@@ -13,37 +13,37 @@ import com.fidelity.smallchange.models.Login;
 
 
 
-@Repository("clientDao")
-public class ClientDaoMyBatisImpl implements ClientDao {
+@Repository("ClientDao")
+public class ClientDaoMyBatisImpl  {
 	@Autowired
 	private ClientMapper mapper;
 	
 	@Autowired
 	Logger log;
 	
-	@Override
+//	@Override
 	public Client getClientByID(String clientId) {
 		log.debug("inside getclientid");
 		Client c=mapper.getClientByID(clientId);
 		return c;
 	}
 
-	@Override
+//	@Override
 	public int insertClient(Client client) {
 		return mapper.insertClient(client);
 	}
 
-	@Override
+//	@Override
 	public int insertIdentification(String client_id, ClientIdentification clientIdentification) {
 		return mapper.insertIdentification(client_id, clientIdentification);
 	}
 
-	@Override
+//	@Override
 	public int updateClient(Client client) {
 		return mapper.updateClient(client);
 	}
 
-	@Override
+//	@Override
 	public int updateIdentification(ClientIdentification clientIdentification, String client_id) {
 		return mapper.updateIdentification(clientIdentification, client_id);
 	}

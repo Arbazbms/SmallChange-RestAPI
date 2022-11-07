@@ -15,7 +15,7 @@
      
 	
 	
-	<resultMap type="Identification" id="identificationMap">
+	<resultMap type="ClientIdentification" id="identificationMap">
 	<result property="type"		column="TYPE" />
 	<result property="value"		column="VALUE" />
 	</resultMap>

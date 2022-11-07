@@ -1,28 +1,38 @@
 package com.fidelity.smallchange.models;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+
+//@JsonAutoDetect()
 public class Client {
 	private String clientId;
 	private String email;
+//	@JsonDeserialize(using = LocalDateDeserializer.class)  
+//	@JsonSerialize(using = LocalDateSerializer.class) 
+	@JsonIgnore
 	private LocalDate date_of_birth;
 	private String country;
 	private String postal;
-	private ClientIdentification id;
-	private String Token;
+	private List<ClientIdentification> id;
+	private String token;
 //	private ClientRegisterationValidation crv;
 	
 	public String getToken() {
-		return Token;
+		return token;
 	}
 
 	public void setToken(String token) {
-		Token = token;
+		token = token;
 	}
 
 	public Client() {
-		super();
 	}
 
 		public Client(String clientId, String email, LocalDate date_of_birth, String country,String postal) {
@@ -33,8 +43,8 @@ public class Client {
 		this.country = country;
 	}
 	public Client(String clientId, String email, LocalDate date_of_birth, String country,String postal, String type,String value) {
-		if(clientId==""||clientId==null)
-			throw new IllegalArgumentException("client id cannot be empty");
+//		if(clientId==""||clientId==null)
+//			throw new IllegalArgumentException("client id cannot be empty");
 		if(email==""||email==null)
 			throw new IllegalArgumentException("email cannot be empty");
 		if(country==""||country==null)
@@ -52,7 +62,7 @@ public class Client {
 		this.date_of_birth = date_of_birth;
 		this.postal=postal;
 		this.country = country;
-		this.id = new ClientIdentification(type,value);
+		this.id = List.of(new ClientIdentification(type,value)) ;
 	}
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
@@ -66,7 +76,7 @@ public class Client {
 	public void setPostal(String postal) {
 		this.postal = postal;
 	}
-	public void setId(ClientIdentification id) {
+	public void setId(List<ClientIdentification> id) {
 		this.id = id;
 	}
 	public void setEmail(String email) {
@@ -88,7 +98,7 @@ public class Client {
 	public String getPostal() {
 		return postal;
 	}
-	public ClientIdentification getId() {
+	public List<ClientIdentification> getId() {
 		return id;
 	}
 
