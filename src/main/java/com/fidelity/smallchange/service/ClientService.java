@@ -12,4 +12,5 @@ public interface ClientService {
 	//public int insertIdentification(String client_id,ClientIdentification clientIdentification);
 	public int updateClient(Client client);
 	public int updateIdentification(ClientIdentification clientIdentification,String client_id);
+	boolean registerClient(Client new_client);
 }
