@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import com.fidelity.smallchange.service.PreferenceService;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PreferenceController {
 
 	@Autowired
@@ -44,7 +46,8 @@ public class PreferenceController {
 	 * 
 	 * @return a single preference object based on id
 	 */
-	@GetMapping("{id}")
+
+	@GetMapping("preference/{id}")
 	public ResponseEntity<Preference> queryForPreferneceById(@PathVariable String id) {
 		logger.debug("getting Preference by ID" + id);
 
