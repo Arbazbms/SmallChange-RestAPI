@@ -32,6 +32,12 @@ public class Login {
 
 
 	@Override
+	public String toString() {
+		return "Login [email=" + email + ", password=" + password + "]";
+	}
+
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(email, password);
 	}

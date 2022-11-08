@@ -135,7 +135,10 @@ public class ClientServiceImpl {
 	}
 	
 	public Client clientLogin(Login credentials) throws JsonProcessingException{
-		Client client=dao.getClientByEmailAndPassword(credentials);
+		log.debug("hello there:");
+		String clientid=dao.getClientByEmailAndPassword(credentials);
+		Client client=dao.getClientByID(clientid);
+		
 		if(client!=null) {
 //			if(client.getPassword()==credentials.getPassword()) {
 				Client fmts_client=this.fmtsAunthenticate(client);
