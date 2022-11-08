@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerErrorException;
 
 import com.fidelity.smallchange.models.Client;
+import com.fidelity.smallchange.models.Login;
 import com.fidelity.smallchange.models.Preference;
 import com.fidelity.smallchange.service.ClientServiceImpl;
 import com.fidelity.smallchange.service.DatabaseRequestResult;
@@ -35,8 +36,9 @@ public class ClientController {
 	@PostMapping(value="/register",
 			 produces=MediaType.APPLICATION_JSON_VALUE,
 			 consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Client> insertPreference(@RequestBody Client client) {
+	public ResponseEntity<Client> registerClient(@RequestBody Client client) {
 		
+	logger.debug(client.toString());	
 	logger.warn(client.getClientId(), "kjkjkj");
 	try {
 		client =service.registerClient(client);
@@ -45,6 +47,25 @@ public class ClientController {
 		throw new ServerErrorException(DB_ERROR_MSG, e);
 	}
 	if (client.getClientId()=="") {
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+	}
+	ResponseEntity<Client> res=ResponseEntity.ok(client);
+	return res;
+}
+	@PostMapping(value="/login",
+			 produces=MediaType.APPLICATION_JSON_VALUE,
+			 consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Client> clientLogin(@RequestBody Login credentials) {
+		
+//	logger.warn(client.getClientId(), "kjkjkj");
+	Client client;
+	try {
+		client =service.clientLogin(credentials);
+	} 
+	catch (Exception e) {
+		throw new ServerErrorException(DB_ERROR_MSG, e);
+	}
+	if (client.getClientId()==""|| client.getToken()==""||client.getToken()==null) {
 		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 	}
 	ResponseEntity<Client> res=ResponseEntity.ok(client);

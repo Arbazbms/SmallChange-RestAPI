@@ -18,12 +18,13 @@ import com.fidelity.smallchange.models.ClientIdentification;
 @Transactional
 class ClientServiceIntegrationTest {
 	
-	Client client01=new Client("","ashhar@gmail.com","2020-2-2","India","6656565","ssn","97654");
+	Client client01=new Client("","ashhar@gmail.com","password123","2020-2-2","India","6656565","ssn","97654","hello");
 	@Autowired
 	ClientServiceImpl cs;		
 	@Test
 	void test() {
 		try {
+			System.out.println(client01);
 			assertEquals(1,cs.registerClient(client01));
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block

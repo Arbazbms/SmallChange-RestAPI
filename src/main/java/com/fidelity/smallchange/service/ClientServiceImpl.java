@@ -108,6 +108,50 @@ public class ClientServiceImpl {
 		Client client;
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
+	    ObjectMapper mapper = new ObjectMapper();
+	    String json=mapper.writeValueAsString(new_client);
+	    System.out.println(json);
+	    HttpEntity<String> request = 
+	    	      new HttpEntity<String>(json, headers);
+		RestTemplate template =new RestTemplate();
+		ResponseEntity<String> fmts_response=template.postForEntity("http://localhost:3000/fmts/client",request, String.class);
+		if(fmts_response.hasBody())
+		{	
+			 client = mapper.readValue(fmts_response.getBody(), Client.class);
+			System.out.println(client);
+			System.out.println(fmts_response);
+//			 client=fmts_response.getBody();
+			new_client.setClientId(client.getClientId());
+			new_client.setToken(client.getToken());
+			System.out.println(new_client);
+			dao.insertClient(new_client);
+			dao.insertIdentification(new_client.getClientId(),new_client.getId().get(0));
+			return new_client;
+		}
+		else
+		{
+			throw new RuntimeException();
+		}		
+	}
+	
+	public Client clientLogin(Login credentials) throws JsonProcessingException{
+		Client client=dao.getClientByEmailAndPassword(credentials);
+		if(client!=null) {
+//			if(client.getPassword()==credentials.getPassword()) {
+				Client fmts_client=this.fmtsAunthenticate(client);
+				client.setToken(fmts_client.getToken());
+				return client;
+//			}
+				
+		}
+		throw new DatabaseException("No matching credentials found");
+	}
+	
+	
+	public Client fmtsAunthenticate(Client new_client) throws JsonProcessingException {
+		Client client;
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
 //	    headers.setAccept((List<MediaType>) MediaType.APPLICATION_JSON);
 	    ObjectMapper mapper = new ObjectMapper();
 	    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
@@ -115,8 +159,7 @@ public class ClientServiceImpl {
         mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
 	    //convert java object to JSON
 	    String json=mapper.writeValueAsString(new_client);
-	    HttpEntity<String> request = 
-	    	      new HttpEntity<String>(json, headers);
+	    HttpEntity<String> request = new HttpEntity<String>(json, headers);
 		RestTemplate template =new RestTemplate();
 		ResponseEntity<String> fmts_response=template.postForEntity("http://localhost:3000/fmts/client",request, String.class);
 		if(fmts_response.hasBody())
@@ -126,16 +169,13 @@ public class ClientServiceImpl {
 //			 client=fmts_response.getBody();
 			new_client.setClientId(client.getClientId());
 			new_client.setToken(client.getToken());
-			System.out.println(new_client);
-			dao.insertClient(new_client);
 			return new_client;
 		}
 		else
 		{
-			throw new RuntimeException();
-		}
-//			
+			throw new RuntimeException("no response from fmts");
+		}	
+		
 	}
-	
 
 }

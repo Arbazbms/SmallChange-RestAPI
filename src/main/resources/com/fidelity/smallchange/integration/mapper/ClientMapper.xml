@@ -7,6 +7,7 @@
 	<resultMap type="Client" id="ClientMapping">
 		<id property="clientId"				    column="CLIENT_ID" />
 		<result property="email"		column="EMAIL" />
+		<result property="password"		column="PASSWORD" />
 		<result property="date_of_birth"		column="DATE_OF_BIRTH" />
 		<result property="country"		column="COUNTRY" />
 		<result property="postal"		column="POSTAL_CODE" />
@@ -24,6 +25,7 @@
 			SELECT
 			    c.client_id,
 			    c.email,
+			    c.password,
 			    c.date_of_birth,
 			    c.country,
 			    c.postal_code,
@@ -35,17 +37,35 @@
 		    WHERE c.client_id=#{clientId}
     </select>
     
+    <select id="getClientByEmailAandPssword" resultMap="ClientMapping" parameterType="Login">
+			SELECT
+			    c.client_id,
+			    c.email,
+			    c.password,
+			    c.date_of_birth,
+			    c.country,
+			    c.postal_code,
+			    ci.type,
+			    ci.value
+			FROM
+			    sc_client c
+			JOIN sc_client_identification ci on c.client_id=ci.client_id	
+		    WHERE c.email=#{email} and c.password=#{password}
+    </select>
+    
     <insert id="insertClient" parameterType="Client">
 			INSERT INTO sc_Client (
 			    client_id,
 			    email,
-			   
+			    password,
+			   	date_of_birth,
 			    country,
 			    postal_Code
 			) VALUES (
 			    #{client.clientId},
 			    #{client.email},
-			    
+			    #{client.password},
+			    #{client.date_of_birth},
 			    #{client.country},
 			    #{client.postal}
 			)
@@ -68,6 +88,7 @@
 			UPDATE sc_client 
 				SET
 			    email=#{client.email},
+			    pasword=#{client.password},
 			    date_of_birth= #{client.date_of_birth},
 			    country=#{client.country},
 			    postal_code=#{client.postal}

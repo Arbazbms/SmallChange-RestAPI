@@ -35,14 +35,14 @@ public class ClientMyBatisDaoIntegrationTest {
 	private static List<Client> allClients = Arrays.asList(
 //			new Client("C101","ashr@gmail.com",	LocalDate.of(2022,1,22),"India","678987","SSN","123456734"),
 //			new Client("C109","ashr@gmail.com",	LocalDate.of(2022,1,22),"India","678987","SSN","123456789")
-			new Client("C101","ashr@gmail.com",	"2022-1-22","India","678987","SSN","123456734"),
-			new Client("C109","ashr@gmail.com","2022-1-22"	,"India","678987","SSN","123456789")
+			new Client("C101","ashr@gmail.com","password123","2022-1-22","India","678987","SSN","123456734",""),
+			new Client("C109","ashr@gmail.com","password123","2022-1-22"	,"India","678987","SSN","123456789","")
 			
 		);
 	
 	@Test
 	void TestGetClientByID() {
-		Client c1=new Client("C101","ashr@gmail.com","2020-2-2","India","678987","SSN","123456734");
+		Client c1=new Client("C101","ashr@gmail.com","password123","2020-2-2","India","678987","SSN","123456734","");
 		Client c=dao.getClientByID("C101");
 		assertNotNull(c);
 		assertThat(c, is(c1));
@@ -55,7 +55,7 @@ public class ClientMyBatisDaoIntegrationTest {
     			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client", "client_id = 'C277'"));
 
 
-		Client newClient = new Client(id,"ranj@gmail.com",	"2020-2-2","India","57004");
+		Client newClient = new Client(id,"ranj@gmail.com","password123","2020-2-2","India","57004","");
 
 		int rows = dao.insertClient(newClient);
 		
@@ -75,7 +75,7 @@ public class ClientMyBatisDaoIntegrationTest {
 			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id ='C277' " ))));
 
 		ClientIdentification newClientIdentification = new ClientIdentification("SSN","123456001");
-		Client newClient = new Client(id,"ranj@gmail.com",	"2020-2-2","India","57004");
+		Client newClient = new Client(id,"ranj@gmail.com","password123","2020-2-2","India","57004","");
 		dao.insertClient(newClient);
 		int rows = dao.insertIdentification("C277",newClientIdentification);
 		
@@ -133,7 +133,7 @@ public class ClientMyBatisDaoIntegrationTest {
 		String sql = "select * from sc_client where client_id = ?";
 		
 		return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> 
-			new Client(rs.getString("client_id"),rs.getString("email"),rs.getDate("date_of_birth").toLocalDate().toString() ,rs.getString("country"),rs.getString("postal_code")),new Object[]{id});
+			new Client(rs.getString("client_id"),rs.getString("email"),rs.getString("password"),rs.getString("date_of_birth") ,rs.getString("country"),rs.getString("postal_code"),rs.getString("token")),new Object[]{id});
 	}
 	
 	private ClientIdentification loadClientIdentificationFromDb(String id) {

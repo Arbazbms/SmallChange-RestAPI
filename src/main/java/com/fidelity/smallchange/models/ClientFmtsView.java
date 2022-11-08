@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ClientFmtsView {
 	private String clientId;
-	private LocalDate dateOfBirth;
+	private String dateOfBirth;
 	private String country;
 	private String postalCode;
 	private String token;
@@ -30,11 +30,11 @@ public class ClientFmtsView {
 		this.clientId = clientId;
 	}
 
-	public LocalDate getDateOfBirth() {
+	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(LocalDate dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
