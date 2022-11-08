@@ -20,11 +20,23 @@ public class TradeOrderService {
 	@Autowired
 	private TradeOrderDao dao;
 	
-	public int insertTrade(Trade trade) {
-		return dao.insertTrade(trade);
+//	public int insertTrade(Trade trade) {
+//		return dao.insertTrade(trade);
+//	}
+	public List<Trade> queryTradeByOrderId(String orderId){
+		return dao.queryTradeByOrderId(orderId);
 	}
-	public int insertOrder(Order order) {
-		return dao.insertOrder(order);
+	public List<Trade> insertOrder(Order order,Trade t) {
+		//int count = 0;
+		try {
+			dao.insertOrder(order);
+			dao.insertTrade(t);
+		} catch (Exception e) {
+			String msg = "Error inserting order";
+			throw new DatabaseException(msg, e);
+		}
+		return queryTradeByOrderId(order.getOrderId());
+		//return dao.insertOrder(order);
 	}
 	public List<Trade> queryTradeByClientId(String clientId){
 		//trade history
@@ -33,9 +45,7 @@ public class TradeOrderService {
 	public List<Trade> queryTradeByTradeId(String tradeId){
 		return dao.queryTradeByTradeId(tradeId);
 	}
-	public List<Trade> queryTradeByOrderId(String orderId){
-		return dao.queryTradeByOrderId(orderId);
-	}
+	
 	
 	
 }

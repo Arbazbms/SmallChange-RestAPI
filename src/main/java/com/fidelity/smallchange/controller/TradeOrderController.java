@@ -17,10 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerErrorException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.fidelity.smallchange.models.Order;
 import com.fidelity.smallchange.models.Trade;
 import com.fidelity.smallchange.service.DatabaseRequestResult;
@@ -45,42 +53,56 @@ public class TradeOrderController {
 			"Error communicating with the Smallchange database";
 
 	
-	@PostMapping(value="/trade",
-			 produces=MediaType.APPLICATION_JSON_VALUE,
-			 consumes=MediaType.APPLICATION_JSON_VALUE)
-	public DatabaseRequestResult insertTrade(@RequestBody Trade t) {
-		logger.debug("inside POSt trade", t.getTradeId());
-		int count = 0;
-		try {
-			count = service.insertTrade(t);
-		} 
-		catch (Exception e) {
-			throw new ServerErrorException(DB_ERROR_MSG, e);
-		}
-		if (count == 0) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-		}
-		return new DatabaseRequestResult(count);
-	}
+//	@PostMapping(value="/trade",
+//			 produces=MediaType.APPLICATION_JSON_VALUE,
+//			 consumes=MediaType.APPLICATION_JSON_VALUE)
+//	public DatabaseRequestResult insertTrade(@RequestBody Trade t) {
+//		logger.debug("inside POSt trade", t.getTradeId());
+//		int count = 0;
+//		try {
+//			count = service.insertTrade(t);
+//		} 
+//		catch (Exception e) {
+//			throw new ServerErrorException(DB_ERROR_MSG, e);
+//		}
+//		if (count == 0) {
+//			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+//		}
+//		return new DatabaseRequestResult(count);
+//	}
 	
 	@PostMapping(value="/order",
 			 produces=MediaType.APPLICATION_JSON_VALUE,
 			 consumes=MediaType.APPLICATION_JSON_VALUE)
-	public DatabaseRequestResult insertOrder(@RequestBody Order o) {
+	@ResponseBody
+	public ResponseEntity<List<Trade>> insertOrder(@RequestBody ObjectNode objectNode) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper objectMapper = new ObjectMapper()
+				   .registerModule(new ParameterNamesModule())
+				   .registerModule(new Jdk8Module())
+				   .registerModule(new JavaTimeModule()); 
+		Order o=objectMapper.treeToValue(objectNode.get("order"),Order.class);
+		Trade t=objectMapper.treeToValue(objectNode.get("trade"),Trade.class);
 		logger.debug("inside POSt order",o.getOrderId());
-		int count = 0;
+		
 		try {
-			count = service.insertOrder(o);
+			List<Trade> tListActual = service.insertOrder(o,t);
+			ResponseEntity<List<Trade>> responseEntity;
+			if (tListActual.size() >0) {
+				
+				responseEntity = ResponseEntity.ok(tListActual); 
+			}
+			else {
+				// If there is no preference with the given id, the response should have an empty
+				// body and HTTP status 204
+				responseEntity = ResponseEntity.noContent().build();
+			}
+			return responseEntity;
 		} 
 		catch (Exception e) {
-			throw new ServerErrorException(DB_ERROR_MSG, e);
+			logger.error("Exception while getting trade with orderID " + o.getOrderId() + ": " + e);
+			throw new ServerErrorException("Backend issue", e);
 		}
-		if (count == 0) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-		}
-		return new DatabaseRequestResult(count);
 	}
-	
 	
 	
 	@GetMapping(value="/tradeClient/{clientId}",
