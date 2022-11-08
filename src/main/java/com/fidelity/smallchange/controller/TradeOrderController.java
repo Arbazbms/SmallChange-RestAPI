@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ import com.fidelity.smallchange.service.TradeOrderService;
 */
 @RestController
 @RequestMapping("/trades")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TradeOrderController {
 	@Autowired
 	private Logger logger;
@@ -53,29 +55,49 @@ public class TradeOrderController {
 			"Error communicating with the Smallchange database";
 
 	
-//	@PostMapping(value="/trade",
-//			 produces=MediaType.APPLICATION_JSON_VALUE,
-//			 consumes=MediaType.APPLICATION_JSON_VALUE)
-//	public DatabaseRequestResult insertTrade(@RequestBody Trade t) {
-//		logger.debug("inside POSt trade", t.getTradeId());
-//		int count = 0;
-//		try {
-//			count = service.insertTrade(t);
-//		} 
-//		catch (Exception e) {
-//			throw new ServerErrorException(DB_ERROR_MSG, e);
-//		}
-//		if (count == 0) {
-//			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-//		}
-//		return new DatabaseRequestResult(count);
-//	}
+	@PostMapping(value="/trade",
+			 produces=MediaType.APPLICATION_JSON_VALUE,
+			 consumes=MediaType.APPLICATION_JSON_VALUE)
+	public DatabaseRequestResult insertTrade(@RequestBody Trade t) {
+		logger.debug("inside POSt trade", t.getTradeId());
+		int count = 0;
+		try {
+			count = service.insertTrade(t);
+		} 
+		catch (Exception e) {
+			
+			
+			throw new ServerErrorException(DB_ERROR_MSG, e);
+		}
+		if (count == 0) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
+		return new DatabaseRequestResult(count);
+	}
 	
 	@PostMapping(value="/order",
 			 produces=MediaType.APPLICATION_JSON_VALUE,
 			 consumes=MediaType.APPLICATION_JSON_VALUE)
+	public DatabaseRequestResult insertOrder(@RequestBody Order order) {
+		logger.debug("inside post order", order.getOrderId());
+		int count = 0;
+		try {
+			count = service.insertOrder(order);
+		} 
+		catch (Exception e) {
+			throw new ServerErrorException(DB_ERROR_MSG, e);
+		}
+		if (count == 0) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
+		return new DatabaseRequestResult(count);
+	}
+	
+	@PostMapping(value="/orderAndTrade",
+			 produces=MediaType.APPLICATION_JSON_VALUE,
+			 consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<Trade>> insertOrder(@RequestBody ObjectNode objectNode) throws JsonMappingException, JsonProcessingException {
+	public ResponseEntity<List<Trade>> insertOrderAndTrade(@RequestBody ObjectNode objectNode) throws JsonMappingException, JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper()
 				   .registerModule(new ParameterNamesModule())
 				   .registerModule(new Jdk8Module())
@@ -85,7 +107,7 @@ public class TradeOrderController {
 		logger.debug("inside POSt order",o.getOrderId());
 		
 		try {
-			List<Trade> tListActual = service.insertOrder(o,t);
+			List<Trade> tListActual = service.insertOrderAndTrade(o,t);
 			ResponseEntity<List<Trade>> responseEntity;
 			if (tListActual.size() >0) {
 				

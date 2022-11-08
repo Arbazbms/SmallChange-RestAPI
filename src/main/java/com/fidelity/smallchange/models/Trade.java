@@ -54,7 +54,7 @@ public Trade(String instrumentId, int quantity, BigDecimal executionPrice, Strin
 
 
 public Trade(String instrumentId, int quantity, BigDecimal executionPrice, String direction, String clientId,
-		String orderId, String tradeId,BigDecimal cashValue,BigDecimal targetPrice,LocalDateTime dateTime) {
+		String orderId, String tradeId,BigDecimal cashValue,BigDecimal targetPrice,String dateTime) {
 	this(instrumentId,quantity,executionPrice,direction,clientId,orderId,tradeId,cashValue);
 	this.order=new Order(instrumentId,quantity,targetPrice,direction,clientId,orderId,dateTime);
 }

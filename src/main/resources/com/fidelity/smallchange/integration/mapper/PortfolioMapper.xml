@@ -6,10 +6,10 @@
 
 
 	<resultMap type="PortfolioItem" id="PortfolioItemMap">
-		<id property="portfolio_item_id"				column="portfolio_item_id" />
-		<result property="client_id"			column="client_id" />
-		<result property="instrument_id"			column="instrument_id" />
-		<result property="trade_id"			column="trade_id" />
+		<id property="portfolioItemId"				column="portfolio_item_id" />
+		<result property="clientId"			column="client_id" />
+		<result property="instrumentId"			column="instrument_id" />
+		<result property="tradeId"			column="trade_id" />
 		<result property="quantity"		column="quantity" />
 	</resultMap>
 
@@ -19,14 +19,10 @@
 			    p.portfolio_item_id,
 			    p.instrument_id,
 			    p.trade_id,
-			    t.execution_price as cost_price,
+			    p.cost_price,
 			    p.quantity
 			FROM
 			    sc_client_portfolio p
-			LEFT JOIN
-				sc_trade t
-			ON 
-				p.trade_id=t.trade_id
 			    WHERE p.client_id= #{id}
 			    
 		</select>

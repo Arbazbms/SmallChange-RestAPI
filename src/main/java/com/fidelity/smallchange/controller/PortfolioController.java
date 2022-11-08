@@ -3,6 +3,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,8 @@ import com.fidelity.smallchange.service.PortfolioBusinessService;
 
 
 @RestController
-@RequestMapping("/portfolio")
+@RequestMapping("/api")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PortfolioController {
 
 	@Autowired
@@ -25,7 +27,7 @@ public class PortfolioController {
 	@Autowired
 	PortfolioBusinessService service;
 
-	@GetMapping("{id}")
+	@GetMapping("portfolio/{id}")
 	public ResponseEntity<List<PortfolioItem>> queryForPreferneceById(@PathVariable String id) {
 		logger.debug("getting Portfolio for client ID" + id);
 //		 If the id in the request is less than or equal to zero, the response should have

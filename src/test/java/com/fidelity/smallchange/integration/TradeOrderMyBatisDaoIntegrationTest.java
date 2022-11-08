@@ -22,7 +22,7 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fidelity.smallchange.models.Client;
-import com.fidelity.smallchange.models.Identification;
+//import com.fidelity.smallchange.models.Identification;
 import com.fidelity.smallchange.models.Login;
 import com.fidelity.smallchange.models.Order;
 import com.fidelity.smallchange.models.Trade;
@@ -40,8 +40,8 @@ class TradeOrderMyBatisDaoIntegrationTest {
 	private JdbcTemplate jdbcTemplate;
 	
 	private static List<Trade> tListExpected=Arrays.asList(
-			new Trade("Q123",3,new BigDecimal("1200.76"),	"B","C101",	"PQR",	"a62375d7-bcb4-46a1-b2f0-5ba6719ae9b5",	new BigDecimal("1200"),new BigDecimal(1000.76),LocalDateTime.of(2022, 2, 9,7,0,0)),
-					new Trade("Q123",	3,new BigDecimal("1200.76")	,"S","C101","rst","a62375d7-bcb4-46a1-b2f0-5ba6719ae987",new BigDecimal("1200"),new BigDecimal(1200.76),LocalDateTime.of(2022, 2, 11,7,0,0))
+			new Trade("Q123",3,new BigDecimal("1200.76"),	"B","C101",	"PQR",	"a62375d7-bcb4-46a1-b2f0-5ba6719ae9b5",	new BigDecimal("1200"),new BigDecimal(1000.76),"2022/02/11T07:00:00"),
+					new Trade("Q123",	3,new BigDecimal("1200.76")	,"S","C101","rst","a62375d7-bcb4-46a1-b2f0-5ba6719ae987",new BigDecimal("1200"),new BigDecimal(1200.76),"2022/02/11T07:00:00")
 	);
 	
 	
@@ -51,7 +51,7 @@ class TradeOrderMyBatisDaoIntegrationTest {
 		
         assertEquals(0, 
     			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_trade", "trade_id = 'a77777d7-bcb4-46a1-b2f0-5ba6719ae9b5'"));
-        Order newOrder=new Order("Q123",3,new BigDecimal(1000.76),"B","C101","xyz", LocalDateTime.of(2022, 2, 11,7,0,0));
+        Order newOrder=new Order("Q123",3,new BigDecimal(1000.76),"B","C101","xyz","2022/02/11T07:00:00");
 		dao.insertOrder(newOrder);
 		Trade newTrade=new Trade("Q123",3,new BigDecimal(31200.76),	"B","C101",newOrder.getOrderId(),
 				"a77777d7-bcb4-46a1-b2f0-5ba6719ae9b5",new BigDecimal(1200));
@@ -75,7 +75,7 @@ class TradeOrderMyBatisDaoIntegrationTest {
     			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_order", "order_id = 'ijk'"));
 
 
-		Order newOrder=new Order("Q123",3,new BigDecimal(1000.76),"B","C101","ijk", LocalDateTime.of(2022, 2, 11,7,0,0));
+		Order newOrder=new Order("Q123",3,new BigDecimal(1000.76),"B","C101","ijk","2022/02/11T07:00:00");
 		int rows = dao.insertOrder(newOrder);
 		
 		
