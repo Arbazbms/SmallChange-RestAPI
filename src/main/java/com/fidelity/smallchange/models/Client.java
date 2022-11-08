@@ -14,10 +14,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class Client {
 	private String clientId;
 	private String email;
+	private String password;
 //	@JsonDeserialize(using = LocalDateDeserializer.class)  
 //	@JsonSerialize(using = LocalDateSerializer.class) 
-	@JsonIgnore
-	private LocalDate date_of_birth;
+	private String date_of_birth;
 	private String country;
 	private String postal;
 	private List<ClientIdentification> id;
@@ -35,14 +35,15 @@ public class Client {
 	public Client() {
 	}
 
-		public Client(String clientId, String email, LocalDate date_of_birth, String country,String postal) {
+		public Client(String clientId, String email,String password, String date_of_birth, String country,String postal, String token) {
 		this.clientId=clientId;
 		this.email=email;
 		this.date_of_birth=date_of_birth;
 		this.postal=postal;
 		this.country = country;
+		this.token=token;
 	}
-	public Client(String clientId, String email, LocalDate date_of_birth, String country,String postal, String type,String value) {
+	public Client(String clientId, String email,String password, String date_of_birth, String country,String postal, String type,String value,String token) {
 //		if(clientId==""||clientId==null)
 //			throw new IllegalArgumentException("client id cannot be empty");
 		if(email==""||email==null)
@@ -58,16 +59,27 @@ public class Client {
 		
 		this.clientId = clientId;
 		this.email=email;
+		this.password=password;
 		//this.login_credentials=new Login(email,password);
 		this.date_of_birth = date_of_birth;
 		this.postal=postal;
 		this.country = country;
 		this.id = List.of(new ClientIdentification(type,value)) ;
+		this.token=token;
 	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
-	public void setDate_of_birth(LocalDate date_of_birth) {
+	public void setDate_of_birth(String date_of_birth) {
 		this.date_of_birth = date_of_birth;
 	}
 	public void setCountry(String country) {
@@ -89,7 +101,7 @@ public class Client {
 	public String getClientId() {
 		return this.clientId;
 	}
-	public LocalDate getDate_of_birth() {
+	public String getDate_of_birth() {
 		return date_of_birth;
 	}
 	public String getCountry() {
@@ -118,13 +130,14 @@ public class Client {
 		Client other = (Client) obj;
 		return Objects.equals(clientId, other.clientId) && Objects.equals(country, other.country)
 				&& Objects.equals(date_of_birth, other.date_of_birth) && Objects.equals(email, other.email)
+				&&Objects.equals(password, other.password)
 				&& Objects.equals(id, other.id) && Objects.equals(postal, other.postal);
 	}
 
 	@Override
 	public String toString() {
-		return "Client [clientId=" + clientId + ", email=" + email + ", date_of_birth=" + date_of_birth + ", country="
-				+ country + ", postal=" + postal + ", id=" + id + "]";
+		return "Client [clientId=" + clientId + ", email=" + email + ",password="+password+", date_of_birth=" + date_of_birth + ", country="
+				+ country + ", postal=" + postal + ", id=" + id + "], token="+token;
 	}
 	
 	

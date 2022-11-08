@@ -40,6 +40,10 @@ public class ClientIdentification {
 	public String getValue() {
 		return value;
 	}
+	@Override
+	public String toString() {
+		return "ClientIdentification [type=" + type + ", value=" + value + "]";
+	}
 	
 
 }

@@ -17,4 +17,5 @@ public interface ClientMapper {
 	public int insertIdentification(@Param("client_id")String client_id,@Param("clientIdentification")ClientIdentification clientIdentification);
 	public int updateClient(@Param("client")Client client);
 	public int updateIdentification(@Param("clientIdentification")ClientIdentification clientIdentification,@Param("client_id")String client_id);
+	public Client getClientByEmailAndPassword(Login credentials);
 }
