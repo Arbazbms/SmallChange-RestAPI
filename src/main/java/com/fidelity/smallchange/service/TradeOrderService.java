@@ -20,13 +20,17 @@ public class TradeOrderService {
 	@Autowired
 	private TradeOrderDao dao;
 	
-//	public int insertTrade(Trade trade) {
-//		return dao.insertTrade(trade);
-//	}
+	public int insertTrade(Trade trade) {
+		return dao.insertTrade(trade);
+	}
+	
+	public int insertOrder(Order order) {
+		return dao.insertOrder(order);
+	}
 	public List<Trade> queryTradeByOrderId(String orderId){
 		return dao.queryTradeByOrderId(orderId);
 	}
-	public List<Trade> insertOrder(Order order,Trade t) {
+	public List<Trade> insertOrderAndTrade(Order order,Trade t) {
 		//int count = 0;
 		try {
 			dao.insertOrder(order);
