@@ -7,4 +7,5 @@ import com.fidelity.smallchange.models.Preference;
 public interface PreferenceMapper {
 	Preference getPreference(String id);
 	int insertPreference(Preference preference);
+	int updatePreference(Preference preference);
 }

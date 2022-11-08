@@ -2,11 +2,12 @@ package com.fidelity.smallchange.models;
 
 import java.util.Objects;
 
-public class Identification {
+public class ClientIdentification {
 	
 	private String type;
 	private String value;
-	public Identification(String type, String value) {
+	public ClientIdentification() {}
+	public ClientIdentification(String type, String value) {
 		if(type==""||value=="")
 			throw new IllegalArgumentException("Valid identification not provided");
 		this.type = type;
@@ -30,7 +31,7 @@ public class Identification {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Identification other = (Identification) obj;
+		ClientIdentification other = (ClientIdentification) obj;
 		return Objects.equals(type, other.type) && Objects.equals(value, other.value);
 	}
 	public String getType() {

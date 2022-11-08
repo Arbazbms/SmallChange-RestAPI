@@ -16,7 +16,7 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fidelity.smallchange.models.Client;
-import com.fidelity.smallchange.models.Identification;
+import com.fidelity.smallchange.models.ClientIdentification;
 import com.fidelity.smallchange.models.Login;
 
 
@@ -72,7 +72,7 @@ public class ClientMyBatisDaoIntegrationTest {
 		assertThat(0, is(equalTo(
 			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id ='C277' " ))));
 
-		Identification newClientIdentification = new Identification("SSN","123456001");
+		ClientIdentification newClientIdentification = new ClientIdentification("SSN","123456001");
 		Client newClient = new Client(id,"ranj@gmail.com",	LocalDate.of(2000,10,27),"India","57004");
 		dao.insertClient(newClient);
 		int rows = dao.insertIdentification("C277",newClientIdentification);
@@ -108,7 +108,7 @@ public class ClientMyBatisDaoIntegrationTest {
 	@Test
 	void TestUpdateIdentification() {
 		// load the original Widget from the database
-		        Identification originalClientIdentification = loadClientIdentificationFromDb("C101");
+		        ClientIdentification originalClientIdentification = loadClientIdentificationFromDb("C101");
 				
 				// modify the local Widget
 		        originalClientIdentification.setValue("123456711");
@@ -119,7 +119,7 @@ public class ClientMyBatisDaoIntegrationTest {
 				assertThat(rows, is(equalTo(1)));
 				
 				// reload widget from database 
-				Identification updatedClientIdentification = loadClientIdentificationFromDb("C101");
+				ClientIdentification updatedClientIdentification = loadClientIdentificationFromDb("C101");
 				
 				// verify that only the price was updated in the database
 				assertThat(originalClientIdentification, is(equalTo(updatedClientIdentification)));
@@ -134,11 +134,11 @@ public class ClientMyBatisDaoIntegrationTest {
 			new Client(rs.getString("client_id"),rs.getString("email"),rs.getDate("date_of_birth").toLocalDate() ,rs.getString("country"),rs.getString("postal_code")),new Object[]{id});
 	}
 	
-	private Identification loadClientIdentificationFromDb(String id) {
+	private ClientIdentification loadClientIdentificationFromDb(String id) {
 		String sql = "select * from sc_client_identification where client_id = ?";
 		
 		return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> 
-			new Identification(rs.getString("type"), rs.getString("value")),new Object[]{id});
+			new ClientIdentification(rs.getString("type"), rs.getString("value")),new Object[]{id});
 	}
 	
 }

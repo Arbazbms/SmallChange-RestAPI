@@ -22,5 +22,9 @@ public class PreferenceDao {
 		// TODO Auto-generated method stub
 		return mapper.insertPreference(preference);
 	}
+	
+	public int updatePreference(Preference preference) {
+		return mapper.updatePreference(preference);
+	}
 
 }

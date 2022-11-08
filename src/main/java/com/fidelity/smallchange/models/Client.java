@@ -1,19 +1,38 @@
 package com.fidelity.smallchange.models;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+
+//@JsonAutoDetect()
 public class Client {
 	private String clientId;
 	private String email;
+//	@JsonDeserialize(using = LocalDateDeserializer.class)  
+//	@JsonSerialize(using = LocalDateSerializer.class) 
+	@JsonIgnore
 	private LocalDate date_of_birth;
 	private String country;
 	private String postal;
-	private Identification id;
-	private ClientRegisterationValidation crv;
+	private List<ClientIdentification> id;
+	private String token;
+//	private ClientRegisterationValidation crv;
 	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		token = token;
+	}
+
 	public Client() {
-		super();
 	}
 
 		public Client(String clientId, String email, LocalDate date_of_birth, String country,String postal) {
@@ -24,8 +43,8 @@ public class Client {
 		this.country = country;
 	}
 	public Client(String clientId, String email, LocalDate date_of_birth, String country,String postal, String type,String value) {
-		if(clientId==""||clientId==null)
-			throw new IllegalArgumentException("client id cannot be empty");
+//		if(clientId==""||clientId==null)
+//			throw new IllegalArgumentException("client id cannot be empty");
 		if(email==""||email==null)
 			throw new IllegalArgumentException("email cannot be empty");
 		if(country==""||country==null)
@@ -43,15 +62,8 @@ public class Client {
 		this.date_of_birth = date_of_birth;
 		this.postal=postal;
 		this.country = country;
-		this.id = new Identification(type,value);
+		this.id = List.of(new ClientIdentification(type,value)) ;
 	}
-//	public Login getLogin_credentials() {
-//		return login_credentials;
-//	}
-//	public void setLogin_credentials(Login login_credentials) {
-//	this.login_credentials = login_credentials;
-//}
-	
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
@@ -64,11 +76,8 @@ public class Client {
 	public void setPostal(String postal) {
 		this.postal = postal;
 	}
-	public void setId(Identification id) {
+	public void setId(List<ClientIdentification> id) {
 		this.id = id;
-	}
-	public void setCrv(ClientRegisterationValidation crv) {
-		this.crv = crv;
 	}
 	public void setEmail(String email) {
 		this.email = email;
@@ -89,23 +98,9 @@ public class Client {
 	public String getPostal() {
 		return postal;
 	}
-	public Identification getId() {
+	public List<ClientIdentification> getId() {
 		return id;
 	}
-	public ClientRegisterationValidation getCrv() {
-		return crv;
-	}
-	
-	
-	public void register() {
-		crv.clientExists(this);
-	}
-//	public boolean authenticate(String email_to_test, String password_to_test) {
-//	if(this.login_credentials.equals(new Login(email_to_test,password_to_test)))
-//		return true;
-//	else
-//		return false;
-//}
 
 	@Override
 	public int hashCode() {

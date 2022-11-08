@@ -35,5 +35,13 @@
 		)
 	</insert>
 
+	<update id="updatePreference" parameterType="Preference">
+		UPDATE sc_client_preference
+		SET 
+		client_id =  #{clientId}, investment_purpose =  #{investmentPurpose},
+		risk_tolerance =  #{riskTolerance}, income_category =  #{incomeCategory},
+		length_of_investment = #{lengthOfInvestment}
+		WHERE client_id = #{clientId}
+	</update>
 
 </mapper>
