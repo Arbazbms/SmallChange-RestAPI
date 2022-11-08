@@ -47,19 +47,25 @@ public class ClientController {
 		throw new ServerErrorException(DB_ERROR_MSG, e);
 	}
 	if (client.getClientId()=="") {
+		logger.debug(client.toString());	
 		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 	}
 	ResponseEntity<Client> res=ResponseEntity.ok(client);
 	return res;
 }
+	
+	
+	
 	@PostMapping(value="/login",
 			 produces=MediaType.APPLICATION_JSON_VALUE,
 			 consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Client> clientLogin(@RequestBody Login credentials) {
 		
 //	logger.warn(client.getClientId(), "kjkjkj");
+	logger.debug(credentials.toString());
 	Client client;
 	try {
+		logger.debug("try");
 		client =service.clientLogin(credentials);
 	} 
 	catch (Exception e) {

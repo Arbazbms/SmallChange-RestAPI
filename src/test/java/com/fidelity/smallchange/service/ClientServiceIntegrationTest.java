@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fidelity.smallchange.models.Client;
 import com.fidelity.smallchange.models.ClientIdentification;
+import com.fidelity.smallchange.models.Login;
 
 
 @SpringBootTest
@@ -22,10 +23,22 @@ class ClientServiceIntegrationTest {
 	@Autowired
 	ClientServiceImpl cs;		
 	@Test
-	void test() {
+	void testRegister() {
 		try {
 			System.out.println(client01);
 			assertEquals(1,cs.registerClient(client01));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Test
+	void testLogin() {
+		try {
+			System.out.println(client01);
+			assertEquals(1,cs.clientLogin(new Login("asharrrg@gmil.com","hello123")));
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -48,7 +48,7 @@ public class ClientDaoMyBatisImpl  {
 		return mapper.updateIdentification(clientIdentification, client_id);
 	}
 
-	public Client getClientByEmailAndPassword(Login credentials) {
+	public String getClientByEmailAndPassword(Login credentials) {
 		// TODO Auto-generated method stub
 		return mapper.getClientByEmailAndPassword(credentials);
 	}
