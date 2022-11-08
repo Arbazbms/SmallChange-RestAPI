@@ -65,6 +65,8 @@ public class TradeOrderController {
 			count = service.insertTrade(t);
 		} 
 		catch (Exception e) {
+			
+			
 			throw new ServerErrorException(DB_ERROR_MSG, e);
 		}
 		if (count == 0) {

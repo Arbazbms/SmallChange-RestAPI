@@ -3,8 +3,13 @@ package com.fidelity.smallchange.models;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 //import com.fidelity.models.SellTrade;
 //import com.fidelity.models.BuyTrade;
 
@@ -19,7 +24,7 @@ public class Order {
 	private  String direction;
 	private  String clientId;
 	private  String orderId;
-    private  LocalDateTime dateTime;
+    private  String dateTime;
 	
 	
 	public Order() {
@@ -27,7 +32,7 @@ public class Order {
 	}
 
 
-	public Order(String instrumentId, int quantity,BigDecimal targetPrice,String direction, String clientId, String orderId,LocalDateTime dateTime) {
+	public Order(String instrumentId, int quantity,BigDecimal targetPrice,String direction, String clientId, String orderId,String dateTime) {
                
 		Objects.requireNonNull(direction,"direction can't be null");
 		if (direction.length() == 0) {
@@ -116,12 +121,12 @@ public class Order {
 	}
 
 
-	public LocalDateTime getDateTime() {
+	public String getDateTime() {
 		return dateTime;
 	}
 
 
-	public void setDateTime(LocalDateTime dateTime) {
+	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
 
