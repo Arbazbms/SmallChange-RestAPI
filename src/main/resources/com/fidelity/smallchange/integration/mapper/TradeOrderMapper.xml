@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fidelity.smallchange.integration.mapper.TradeOrderMapper">
+
+	<insert id="insertTrade" >
+			INSERT INTO sc_trade(
+			INSTRUMENT_ID,
+			QUANTITY,
+			EXECUTION_PRICE,
+			DIRECTION,
+	        CASH_VALUE,
+	        CLIENT_ID,
+	        ORDER_ID,
+	        TRADE_ID)
+			VALUES (
+			#{trade.instrumentId},
+			#{trade.quantity},
+			#{trade.executionPrice}, 
+			#{trade.direction},
+			#{trade.cashValue},
+			#{trade.clientId},
+			#{trade.orderId},
+			#{trade.tradeId}
+			)
+    </insert>
+    
+    <insert id="insertOrder">
+    INSERT INTO sc_order(
+    INSTRUMENT_ID,
+    QUANTITY,
+    TARGET_PRICE,
+	DIRECTION,
+	CLIENT_ID,
+	ORDER_ID,
+	ORDER_TIME)
+    VALUES(#{order.instrumentId}, #{order.quantity}, #{order.targetPrice}, #{order.direction},#{order.clientId},
+    #{order.orderId},#{order.dateTime})
+    </insert>
+    
+    
+    <resultMap type="Trade" id="TradeOrderMap">
+		<id property="tradeId"				    column="TRADE_ID" />
+		<result property="instrumentId"		column="INSTRUMENT_ID" />
+		<result property="quantity"		column="QUANTITY" />
+		<result property="executionPrice"		column="EXECUTION_PRICE" />
+		<result property="direction"		column="DIRECTION" />
+		<result property="cashValue"		column="CASH_VALUE" />
+		<result property="clientId"		column="CLIENT_ID" />
+		<result property="orderId"		column="ORDER_ID" />
+		<association property="order" resultMap="orderMap"/>
+	 </resultMap>
+	 
+	 <resultMap type="Order" id="orderMap">
+	 <id property="orderId"				    column="ORDER_ID" />
+	 <result property="instrumentId"		column="INSTRUMENT_ID" />
+	<result property="quantity"		column="QUANTITY" />
+	<result property="direction"		column="DIRECTION" />
+	<result property="targetPrice"		column="TARGET_PRICE" />
+	<result property="clientId"		column="CLIENT_ID" />
+	<result property="dateTime"		column="ORDER_TIME" />
+	</resultMap>
+    
+	<select id="queryTradeByClientId" resultMap="TradeOrderMap" parameterType="String">
+	SELECT
+			t.INSTRUMENT_ID,t.QUANTITY,t.EXECUTION_PRICE,t.DIRECTION,
+	        t.CASH_VALUE,t.CLIENT_ID,t.ORDER_ID,t.TRADE_ID ,r.TARGET_PRICE,r.ORDER_TIME,r.INSTRUMENT_ID,
+	        r.QUANTITY,r.DIRECTION,r.CLIENT_ID,r.ORDER_ID
+	        
+	        FROM sc_trade t
+	        JOIN sc_order r on t.ORDER_ID = r.ORDER_ID
+	        where t.CLIENT_ID =#{clientId}
+	</select>
+	
+	<select id="queryTradeByTradeId" resultMap="TradeOrderMap" parameterType="String">
+	SELECT
+			t.INSTRUMENT_ID,t.QUANTITY,t.EXECUTION_PRICE,t.DIRECTION,
+	        t.CASH_VALUE,t.CLIENT_ID,t.ORDER_ID,t.TRADE_ID ,r.TARGET_PRICE,r.ORDER_TIME
+	        FROM sc_trade t
+	        JOIN sc_order r on t.ORDER_ID = r.ORDER_ID
+	        where t.TRADE_ID =#{tradeId}
+	</select>
+	
+	<select id="queryTradeByOrderId" resultMap="TradeOrderMap" parameterType="String">
+	SELECT
+			t.INSTRUMENT_ID,t.QUANTITY,t.EXECUTION_PRICE,t.DIRECTION,
+	        t.CASH_VALUE,t.CLIENT_ID,t.ORDER_ID,t.TRADE_ID ,r.TARGET_PRICE,r.ORDER_TIME
+	        FROM sc_trade t 
+	        JOIN sc_order r on t.ORDER_ID = r.ORDER_ID
+	        where t.ORDER_ID =#{orderId}
+	</select>
+	
+</mapper>
