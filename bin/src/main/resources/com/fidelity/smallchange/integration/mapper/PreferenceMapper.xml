@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.fidelity.integration.PreferenceMapper">
+<mapper namespace="com.fidelity.smallchange.integration.mapper.PreferenceMapper">
 
 	<select id="getPreference" resultType="Preference"  parameterType="String">
 	
@@ -35,5 +35,13 @@
 		)
 	</insert>
 
+	<update id="updatePreference" parameterType="Preference">
+		UPDATE sc_client_preference
+		SET 
+		client_id =  #{clientId}, investment_purpose =  #{investmentPurpose},
+		risk_tolerance =  #{riskTolerance}, income_category =  #{incomeCategory},
+		length_of_investment = #{lengthOfInvestment}
+		WHERE client_id = #{clientId}
+	</update>
 
 </mapper>

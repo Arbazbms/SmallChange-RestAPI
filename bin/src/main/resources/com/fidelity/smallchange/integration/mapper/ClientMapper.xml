@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fidelity.smallchange.integration.mapper.ClientMapper">
+
+	<resultMap type="Client" id="ClientMapping">
+		<id property="clientId"				    column="CLIENT_ID" />
+		<result property="email"		column="EMAIL" />
+		<result property="password"		column="PASSWORD" />
+		<result property="date_of_birth"		column="DATE_OF_BIRTH" />
+		<result property="country"		column="COUNTRY" />
+		<result property="postal"		column="POSTAL_CODE" />
+		<association property="id" resultMap="identificationMap"/>
+	 </resultMap>
+     
+	
+	
+	<resultMap type="ClientIdentification" id="identificationMap">
+	<result property="type"		column="TYPE" />
+	<result property="value"		column="VALUE" />
+	</resultMap>
+	
+    <select id="getClientByID" resultMap="ClientMapping" parameterType="String">
+			SELECT
+			    c.client_id,
+			    c.email,
+			    c.password,
+			    c.date_of_birth,
+			    c.country,
+			    c.postal_code,
+			    ci.type,
+			    ci.value
+			FROM
+			    sc_client c
+			JOIN sc_client_identification ci on c.client_id=ci.client_id	
+		    WHERE c.client_id=#{clientId}
+    </select>
+    
+    <select id="getClientByEmailAndPassword" resultType="String" parameterType="Login">
+			SELECT
+			    c.client_id
+			FROM
+			    sc_client c
+
+		    WHERE c.email=#{email} AND c.password=#{password}
+    </select>
+    
+    <insert id="insertClient" parameterType="Client">
+			INSERT INTO sc_Client (
+			    client_id,
+			    email,
+			    password,
+			   	date_of_birth,
+			    country,
+			    postal_Code,
+			    token
+			) VALUES (
+			    #{client.clientId},
+			    #{client.email},
+			    #{client.password},
+			    #{client.date_of_birth},
+			    #{client.country},
+			    #{client.postal},
+			    #{client.token}
+			)
+    </insert>
+    
+     <insert id="insertIdentification" >
+			INSERT INTO sc_client_identification (
+			    client_id,
+			    type,
+			    value
+			 
+			) VALUES (
+			    #{client_id},
+			    #{clientIdentification.type},
+			    #{clientIdentification.value}
+			)
+    </insert>
+    
+     <update id="updateClient">
+			UPDATE sc_client 
+				SET
+			    email=#{client.email},
+			    password=#{client.password},
+			    date_of_birth= #{client.date_of_birth},
+			    country=#{client.country},
+			    postal_code=#{client.postal}
+				WHERE 	sc_client.client_id=#{client.clientId}
+    </update>
+    
+    <update id="updateIdentification" >
+			UPDATE sc_Client_Identification 
+			SET
+			    type=#{clientIdentification.type},
+			    value=#{clientIdentification.value}
+			WHERE	sc_client_identification.client_id=#{client_id}
+    </update>
+    
+</mapper>

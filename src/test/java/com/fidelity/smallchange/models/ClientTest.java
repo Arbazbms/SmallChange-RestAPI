@@ -23,13 +23,7 @@ class ClientTest {
 		assertNotNull(client);
 		
 	}
-	@Test
-	void testClientCreation_failure_emptystring() {
-		Exception e= assertThrows(IllegalArgumentException.class,()->{
-			Client client2=new Client("","ashh@gmail.com","password123","2020-2-2","India","33","adhaar","208979677","");});
-		assertEquals("client id cannot be empty",e.getMessage());
-		
-	}
+	
 	@Test
 	void testClientCreation_failure_emptycountry() {
 		Exception e= assertThrows(IllegalArgumentException.class,()->{

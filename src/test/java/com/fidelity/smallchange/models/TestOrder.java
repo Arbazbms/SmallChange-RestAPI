@@ -26,7 +26,7 @@ class TestOrder {
 	@BeforeEach
 	void setUp() {
 		zeroTwoDps = new BigDecimal("0.00").setScale(2, RoundingMode.HALF_EVEN);
-		or=new Order("12er",5,new BigDecimal("10000.00"),"S","34ty","56re",LocalDateTime.of(2022,02,21,11,30));
+		or=new Order("12er",5,new BigDecimal("10000.00"),"S","34ty","56re",LocalDateTime.of(2022,02,21,11,30).toString());
 		o=new ArrayList<>();
 		o.add(or);
 //		sell=new SellTrade(new BigDecimal("1000.00"),o);
@@ -47,7 +47,7 @@ class TestOrder {
 	    @Test
 	    void testNegativeQuantity() {
 	    	Exception e = assertThrows(IllegalArgumentException.class, () -> {
-	    		new Order("12er",-5,new BigDecimal("10000.00"),"S","34ty","56re",LocalDateTime.of(2022,02,21,11,30));
+	    		new Order("12er",-5,new BigDecimal("10000.00"),"S","34ty","56re",LocalDateTime.of(2022,02,21,11,30).toString());
 	    	});
 	    	assertEquals("quantity must be greater than or equal to 0", e.getMessage());
 	    }
@@ -55,7 +55,7 @@ class TestOrder {
 	    @Test
 	    void testNullTargetPrice() {
 	    	Exception e = assertThrows(NullPointerException.class, () -> {
-	    		new Order("12er",5,null,"S","34ty","56re",LocalDateTime.of(2022,02,21,11,30));
+	    		new Order("12er",5,null,"S","34ty","56re",LocalDateTime.of(2022,02,21,11,30).toString());
 	    	});
 	    	assertEquals("targetPrice can't be null", e.getMessage());
 	    }
@@ -64,7 +64,7 @@ class TestOrder {
 	    @Test
 	    void testNegativeTargetPrice() {
 	    	Exception e = assertThrows(IllegalArgumentException.class, () -> {
-	    		new Order("12er",5,new BigDecimal("-10000.00"),"S","34ty","56re",LocalDateTime.of(2022,02,21,11,30));
+	    		new Order("12er",5,new BigDecimal("-10000.00"),"S","34ty","56re",LocalDateTime.of(2022,02,21,11,30).toString());
 	    	});
 	    	assertEquals("targetPrice must be greater than or equal to 0", e.getMessage());
 	    }
@@ -74,7 +74,7 @@ class TestOrder {
 	@Test
 	    void testNullDirection() {
 	    	Exception e = assertThrows(NullPointerException.class, () -> {
-	    		new Order("12er",5,new BigDecimal("10000.00"),null,"34ty","56re",LocalDateTime.of(2022,02,21,11,30));
+	    		new Order("12er",5,new BigDecimal("10000.00"),null,"34ty","56re",LocalDateTime.of(2022,02,21,11,30).toString());
 	    	});
 	    	assertEquals("direction can't be null", e.getMessage());
 	    }
@@ -82,7 +82,7 @@ class TestOrder {
 	    @Test
 	    void testEmptyDirection() {
 	    	Exception e = assertThrows(IllegalArgumentException.class, () -> {
-	    		new Order("12er",5,new BigDecimal("10000.00"),"","34ty","56re",LocalDateTime.of(2022,02,21,11,30));
+	    		new Order("12er",5,new BigDecimal("10000.00"),"","34ty","56re",LocalDateTime.of(2022,02,21,11,30).toString());
 	    	});
 	    	assertEquals("direction can't be empty", e.getMessage());
 	    }

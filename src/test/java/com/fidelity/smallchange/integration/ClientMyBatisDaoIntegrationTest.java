@@ -24,8 +24,9 @@ import com.fidelity.smallchange.models.Login;
 @SpringBootTest
 @Transactional
 public class ClientMyBatisDaoIntegrationTest {
+	
 	@Autowired
-	private ClientDao dao;
+	private ClientDaoMyBatisImpl dao;
 
 	
 	@Autowired
@@ -42,20 +43,20 @@ public class ClientMyBatisDaoIntegrationTest {
 	
 	@Test
 	void TestGetClientByID() {
-		Client c1=new Client("C101","ashr@gmail.com","password123","2020-2-2","India","678987","SSN","123456734","");
-		Client c=dao.getClientByID("C101");
-		assertNotNull(c);
-		assertThat(c, is(c1));
+		Client c1=new Client("1079467900","vishal@gamil.com","1111111","2020-03-27","India",	"600040",	"Adhaar","123123123456"	,"");
+		Client c=dao.getClientByID("1079467900");
+		//assertNotNull(c);
+		assertEquals(c, c1);
 	}
 	@Test
 	void TestInsertClient() {
-        String id="C277";
+        //String id="C277";
 		// verify that Widget with id = 42 is NOT in the database
         assertEquals(0, 
-    			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client", "client_id = 'C277'"));
+    			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client", "client_id = '1079467901'"));
 
 
-		Client newClient = new Client(id,"ranj@gmail.com","password123","2020-2-2","India","57004","");
+		Client newClient = new Client("1079467901","vishal@gamil.com","1111111","2020-03-27","India","600040","");
 
 		int rows = dao.insertClient(newClient);
 		
@@ -64,7 +65,7 @@ public class ClientMyBatisDaoIntegrationTest {
 		
 		// verify that Widget with id = 42 IS in the database
 		assertEquals(1, 
-			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client", "client_id = 'C277'"));
+			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client", "client_id = '1079467901'"));
 	
 	}
 	@Test
@@ -72,29 +73,29 @@ public class ClientMyBatisDaoIntegrationTest {
 		String id="C277";
 		// verify that Widget with id = 42 is NOT in the database
 		assertThat(0, is(equalTo(
-			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id ='C277' " ))));
+			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id ='1079467901' " ))));
 
-		ClientIdentification newClientIdentification = new ClientIdentification("SSN","123456001");
-		Client newClient = new Client(id,"ranj@gmail.com","password123","2020-2-2","India","57004","");
-		dao.insertClient(newClient);
-		int rows = dao.insertIdentification("C277",newClientIdentification);
+		ClientIdentification newClientIdentification = new ClientIdentification("Adhaar","123123123456");
+		Client newClient = new Client("1079467901","vishal@gamil.com","1111111","2020-03-27","India",	"600040","");
+dao.insertClient(newClient);
+		int rows = dao.insertIdentification("1079467901",newClientIdentification);
 		
 		// verify that 1 row was inserted
 		assertThat(rows, is(equalTo(1)));
 		
 		// verify that Widget with id = 42 IS in the database
 		assertThat(1, is(equalTo(
-			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id ='C277' " ))));
+			JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "sc_client_identification", "client_id ='1079467901' " ))));
 	}
 	@Test
 	void TestUpdateClient() {
          
 		
 		// load the original Widget from the database
-		Client originalClient = loadClientFromDb("C101");
+		Client originalClient = loadClientFromDb("1079467900");
 		
 		// modify the local Widget
-		originalClient.setPostal("570008");
+		originalClient.setPostal("600040");
 
 		int rows = dao.updateClient(originalClient);
 		
@@ -102,7 +103,7 @@ public class ClientMyBatisDaoIntegrationTest {
 		assertThat(rows, is(equalTo(1)));
 		
 		// reload widget from database 
-		Client updatedClient = loadClientFromDb("C101");
+		Client updatedClient = loadClientFromDb("1079467900");
 		
 		// verify that only the price was updated in the database
 		assertThat(originalClient, is(equalTo(updatedClient)));
@@ -110,18 +111,18 @@ public class ClientMyBatisDaoIntegrationTest {
 	@Test
 	void TestUpdateIdentification() {
 		// load the original Widget from the database
-		        ClientIdentification originalClientIdentification = loadClientIdentificationFromDb("C101");
+		        ClientIdentification originalClientIdentification = loadClientIdentificationFromDb("1079467900");
 				
 				// modify the local Widget
-		        originalClientIdentification.setValue("123456711");
+		        originalClientIdentification.setValue("123123123456");
 
-				int rows = dao.updateIdentification(originalClientIdentification,"C101");
+				int rows = dao.updateIdentification(originalClientIdentification,"1079467900");
 				
 				// verify that 1 row was updated
 				assertThat(rows, is(equalTo(1)));
 				
 				// reload widget from database 
-				ClientIdentification updatedClientIdentification = loadClientIdentificationFromDb("C101");
+				ClientIdentification updatedClientIdentification = loadClientIdentificationFromDb("1079467900");
 				
 				// verify that only the price was updated in the database
 				assertThat(originalClientIdentification, is(equalTo(updatedClientIdentification)));
