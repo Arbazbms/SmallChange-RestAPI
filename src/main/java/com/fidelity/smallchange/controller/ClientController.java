@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import com.fidelity.smallchange.service.PortfolioBusinessService;
 
 @RestController
 @RequestMapping("/client")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ClientController {
 	
 	@Autowired
@@ -66,7 +68,8 @@ public class ClientController {
 	Client client;
 	try {
 		logger.debug("try");
-		client =service.clientLogin(credentials);
+		client = service.clientLogin(credentials);
+		logger.debug("after try::::", client.getEmail());
 	} 
 	catch (Exception e) {
 		throw new ServerErrorException(DB_ERROR_MSG, e);
