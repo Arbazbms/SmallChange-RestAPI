@@ -27,13 +27,13 @@ class ClientIdentificationTest {
 	void testIdentityCreation_failureEmptyType() {
 		Exception e= assertThrows(IllegalArgumentException.class,()->{
 			ClientIdentification clientIdentification=new ClientIdentification("","2097642357958");});
-		assertEquals("Valid clientIdentification not provided",e.getMessage());
+		assertEquals("Valid identification not provided",e.getMessage());
 		}
 	@Test
 	void testIdentityCreation_failureEmptyValue() {
 		Exception e= assertThrows(IllegalArgumentException.class,()->{
 			ClientIdentification clientIdentification=new ClientIdentification("Adhaar","");});
-		assertEquals("Valid clientIdentification not provided",e.getMessage());
+		assertEquals("Valid identification not provided",e.getMessage());
 		}
 			
 }

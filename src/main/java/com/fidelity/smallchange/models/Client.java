@@ -29,6 +29,7 @@ public class Client {
 		this.postal=postal;
 		this.country = country;
 		this.token=token;
+		this.password=password;
 	}
 	public Client(String clientId, String email,String password, String date_of_birth, String country,String postal, String type,String value,String token) {
 		if(email==""||email==null)

@@ -40,8 +40,8 @@ class TradeOrderMyBatisDaoIntegrationTest {
 	private JdbcTemplate jdbcTemplate;
 	
 	private static List<Trade> tListExpected=Arrays.asList(
-			new Trade("Q123",3,new BigDecimal("1200.76"),	"B","C101",	"PQR",	"a62375d7-bcb4-46a1-b2f0-5ba6719ae9b5",	new BigDecimal("1200"),new BigDecimal(1000.76),"2022/02/11T07:00:00"),
-					new Trade("Q123",	3,new BigDecimal("1200.76")	,"S","C101","rst","a62375d7-bcb4-46a1-b2f0-5ba6719ae987",new BigDecimal("1200"),new BigDecimal(1200.76),"2022/02/11T07:00:00")
+			new Trade("Q123",3,new BigDecimal("1200.76"),	"B","C101",	"PQR",	"a62375d7-bcb4-46a1-b2f0-5ba6719ae9b5",	new BigDecimal("1200"),new BigDecimal(1000.76),"09-FEB-22 07.00.00.000000000 AM"),
+					new Trade("Q123",	3,new BigDecimal("1200.76")	,"S","C101","rst","a62375d7-bcb4-46a1-b2f0-5ba6719ae987",new BigDecimal("1200"),new BigDecimal(1200.76),"11-FEB-22 07.00.00.000000000 AM")
 	);
 	
 	
