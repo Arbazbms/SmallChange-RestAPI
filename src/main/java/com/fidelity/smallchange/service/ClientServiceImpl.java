@@ -136,8 +136,9 @@ public class ClientServiceImpl {
 	
 	public Client clientLogin(Login credentials) throws JsonProcessingException{
 		log.debug("hello there:");
-		String clientid=dao.getClientByEmailAndPassword(credentials);
-		Client client=dao.getClientByID(clientid);
+		Client client=dao.getClientByEmailAndPassword(credentials);
+//		Client client=dao.getClientByID(clientid);
+		log.debug("CLIENT********", client);
 		
 		if(client!=null) {
 //			if(client.getPassword()==credentials.getPassword()) {
@@ -146,8 +147,8 @@ public class ClientServiceImpl {
 				return client;
 //			}
 				
-		}
-		throw new DatabaseException("No matching credentials found");
+		}else
+			return null;
 	}
 	
 	

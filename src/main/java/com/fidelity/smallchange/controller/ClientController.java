@@ -69,13 +69,14 @@ public class ClientController {
 	try {
 		logger.debug("try");
 		client = service.clientLogin(credentials);
-		logger.debug("after try::::", client.getEmail());
+		logger.debug("after try::::", client);
 	} 
 	catch (Exception e) {
 		throw new ServerErrorException(DB_ERROR_MSG, e);
 	}
-	if (client.getClientId()==""|| client.getToken()==""||client.getToken()==null) {
-		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+	if (client == null) {
+		ResponseEntity<Client> res=ResponseEntity.noContent().build();
+		return res;
 	}
 	ResponseEntity<Client> res=ResponseEntity.ok(client);
 	return res;
