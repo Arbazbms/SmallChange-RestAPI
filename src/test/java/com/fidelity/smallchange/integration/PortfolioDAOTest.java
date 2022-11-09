@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,10 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fidelity.smallchange.models.PortfolioItem;
 
 
-
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration("classpath:beans.xml")
 @Transactional
+@SpringBootTest
 class PortfolioDAOTest {
 
 	@Autowired
