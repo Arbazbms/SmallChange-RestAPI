@@ -41,6 +41,7 @@ import com.fidelity.smallchange.service.TradeOrderService;
  *GET  http://localhost:8080/trades/trade/a62375d7-bcb4-46a1-b2f0-5ba6719ae9b5
  *GET  http://localhost:8080/trades?orderId=PQR
 */
+
 @RestController
 @RequestMapping("/trades")
 @CrossOrigin(origins = "*", allowedHeaders = "*")

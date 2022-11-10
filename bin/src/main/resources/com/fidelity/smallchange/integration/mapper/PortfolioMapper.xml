@@ -33,14 +33,16 @@
 				    instrument_id,
 				    trade_id,
 				    quantity,
-				    client_id
+				    client_id,
+				    cost_price
 				 
 				) VALUES (
 				    #{portfolio_item_id},
 				    #{instrument_id},
 				    #{trade_id},
 				    #{quantity},
-				    #{client_id}
+				    #{client_id},
+				    #{cost_price}
 				)
 	</insert>
 

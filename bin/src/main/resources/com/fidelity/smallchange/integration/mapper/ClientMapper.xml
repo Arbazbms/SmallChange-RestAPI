@@ -37,12 +37,19 @@
 		    WHERE c.client_id=#{clientId}
     </select>
     
-    <select id="getClientByEmailAndPassword" resultType="String" parameterType="Login">
+    <select id="getClientByEmailAndPassword" resultMap="ClientMapping" parameterType="Login">
 			SELECT
-			    c.client_id
+			 	c.client_id,
+			    c.email,
+			    c.password,
+			    c.date_of_birth,
+			    c.country,
+			    c.postal_code,
+			    ci.type,
+			    ci.value
 			FROM
-			    sc_client c
-
+			sc_client c
+			JOIN sc_client_identification ci on c.client_id=ci.client_id
 		    WHERE c.email=#{email} AND c.password=#{password}
     </select>
     
