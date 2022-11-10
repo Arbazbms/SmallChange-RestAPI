@@ -14,8 +14,7 @@ import com.fidelity.smallchange.models.Trade;
 
 
 
-@Service()
-
+@Service
 public class TradeOrderService {
 	@Autowired
 	private TradeOrderDao dao;
